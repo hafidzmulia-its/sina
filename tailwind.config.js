@@ -18,6 +18,7 @@ export default {
                 comfortaa: ["Comfortaa", "cursive"],
                 fredoka: ["Fredoka", "sans-serif"],
                 dmsans: ["DM Sans", "sans-serif"],
+                eastseadokdo: ["East Sea Dokdo", "cursive"],
             },
             colors: {
                 nav: "#C7D4CE", // your color

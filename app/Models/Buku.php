@@ -41,16 +41,16 @@ class Buku extends Model
         });
     }
 
-    public function scopeSearch(Builder $query, ?string $search): Builder
-    {
-        return $query->when($search, function ($query, $search) {
-            return $query->where(function ($query) use ($search) {
-                $query->where('judul', 'like', "%{$search}%")
-                      ->orWhere('jenis', 'like', "%{$search}%")
-                      ->orWhere('sinopsis', 'like', "%{$search}%");
-            });
+public function scopeSearch(Builder $query, ?string $search): Builder
+{
+    return $query->when($search, function ($query, $search) {
+        return $query->where(function ($query) use ($search) {
+            $query->where('judul', 'LIKE', "%{$search}%")
+                  ->orWhere('sinopsis', 'LIKE', "%{$search}%")
+                  ->orWhere('jenis', 'LIKE', "%{$search}%");
         });
-    }
+    });
+}
 
     public function scopePopular(Builder $query): Builder
     {
@@ -70,14 +70,14 @@ class Buku extends Model
     }
 
     // Helper methods
-    public function getJenisOptions(): array
-    {
-        return [
-            'Fabel',
-            'Cerita Rakyat', 
-            'Dongeng',
-        ];
-    }
+public function getJenisOptions(): array
+{
+    return [
+        'Fabel' => 'Fabel',
+        'Cerita Rakyat' => 'Cerita Rakyat',
+        'Dongeng' => 'Dongeng'
+    ];
+}
 
     public function getTotalReaders(): int
     {

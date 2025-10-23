@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\BukuUserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,14 +11,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Use DashboardController instead of closure
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // User book browsing routes
+    Route::get('/buku', [BukuUserController::class, 'index'])->name('buku.index');
+    Route::get('/buku/{buku}', [BukuUserController::class, 'show'])->name('buku.show');
+    Route::match(['GET', 'POST'], '/buku/{buku}/read', [BukuUserController::class, 'startReading'])->name('buku.read');
+    Route::get('/buku/type/{jenis}', [BukuUserController::class, 'byType'])->name('buku.type');
     
     // CSRF Token refresh routes
     Route::get('/csrf-token', function () {

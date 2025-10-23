@@ -1,4 +1,5 @@
-<nav x-data="{ open: false }" class="bg-nav border-b border-gray-100">
+
+<nav x-data="{ open: false }" class="bg-nav ">
     <!-- Primary Navigation Menu -->
     <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-20 py-3">
         <div class="flex justify-between items-center h-16">
@@ -13,16 +14,23 @@
 
                 <!-- Search Bar -->
                 <div class="hidden md:block">
-                    <div class="relative">
+                    <form action="{{ route('buku.index') }}" method="GET" class="relative">
+                        <!-- Preserve current filter if exists -->
+                        @if(request('jenis'))
+                            <input type="hidden" name="jenis" value="{{ request('jenis') }}">
+                        @endif
+                        
                         <input type="text" 
+                               name="search"
+                               value="{{ request('search') }}"
                                placeholder="Apa yang ingin kamu baca hari ini" 
                                class="w-80 px-4 py-2 pl-4 pr-10 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent font-dmsans">
-                        <button class="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-3">
                             <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
 
@@ -30,7 +38,7 @@
             <div class="hidden sm:flex sm:items-center text-lg sm:space-x-12">
                 <!-- Navigation Links -->
                 <div class="flex space-x-12">
-                    <a href="#" class="text-teal-600 font-medium font-dmsans hover:text-teal-700 transition">Jenis Buku</a>
+                    <a href="{{ route('buku.index') }}" class="text-teal-600 font-medium font-dmsans hover:text-teal-700 transition">Jenis Buku</a>
                     <a href="#" class="text-teal-600 font-medium font-dmsans hover:text-teal-700 transition">Progress</a>
                 </div>
 
@@ -99,21 +107,27 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <!-- Mobile Search -->
         <div class="px-4 py-3 border-b border-gray-200">
-            <div class="relative">
+            <form action="{{ route('buku.index') }}" method="GET" class="relative">
+                @if(request('jenis'))
+                    <input type="hidden" name="jenis" value="{{ request('jenis') }}">
+                @endif
+                
                 <input type="text" 
+                       name="search"
+                       value="{{ request('search') }}"
                        placeholder="Apa yang ingin kamu baca hari ini" 
                        class="w-full px-4 py-2 pl-4 pr-10 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent font-dmsans">
-                <button class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-3">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </button>
-            </div>
+            </form>
         </div>
 
         <!-- Mobile Navigation Links -->
         <div class="pt-2 pb-3 space-y-1 font-dmsans">
-            <a href="#" class="block px-4 py-2 text-base font-medium text-teal-600 hover:text-teal-700 hover:bg-gray-50 transition">Jenis Buku</a>
+            <a href="{{ route('buku.index') }}" class="block px-4 py-2 text-base font-medium text-teal-600 hover:text-teal-700 hover:bg-gray-50 transition">Jenis Buku</a>
             <a href="#" class="block px-4 py-2 text-base font-medium text-teal-600 hover:text-teal-700 hover:bg-gray-50 transition">Progress</a>
         </div>
 
@@ -137,7 +151,6 @@
                         @elseif(Auth::user()->isSuperAdmin())
                             Super Admin
                         @endif
-                
                     </div>
                 </div>
             </div>
