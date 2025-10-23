@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $recentHistory = History::with('buku')
             ->byUser($user->username)
             ->latest('tanggal_record')
-            ->take(6)
+            ->take(12) // Increased from 6 to 12
             ->get();
 
         // Get book types with count
@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ->first() ?? Buku::first();
         // dd($recentHistory);
         // Get popular books
-        $popularBooks = Buku::popular()->take(6)->get();
+        $popularBooks = Buku::popular()->take(12)->get();
 
         return view('dashboard', compact(
             'recentHistory', 

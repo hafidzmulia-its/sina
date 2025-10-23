@@ -8,6 +8,7 @@ use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class BukuUserController extends Controller
 {
@@ -30,7 +31,30 @@ class BukuUserController extends Controller
         $direction = $request->get('direction', 'desc');
         $query->sortBy($sortBy, $direction);
 
-        $bukus = $query->paginate(12)->withQueryString();
+        // Handle per_page parameter
+        $perPage = $request->get('per_page', 10);
+        
+        if ($perPage === 'all') {
+            // Get all results without pagination
+            $allBooks = $query->get();
+            // Create a manual paginator-like object for consistent interface
+            $bukus = new \Illuminate\Pagination\LengthAwarePaginator(
+                $allBooks, // items
+                $allBooks->count(), // total
+                $allBooks->count(), // per page (same as total)
+                1, // current page
+                [
+                    'path' => request()->url(),
+                    'pageName' => 'page',
+                ]
+            );
+            $bukus->withQueryString();
+        } else {
+            // Normal pagination
+            $perPage = is_numeric($perPage) ? (int) $perPage : 10;
+            $perPage = in_array($perPage, [10, 20, 50]) ? $perPage : 10;
+            $bukus = $query->paginate($perPage)->withQueryString();
+        }
 
         // Get all available book types for filter
         $jenisOptions = collect(['Fabel', 'Cerita Rakyat', 'Dongeng']);

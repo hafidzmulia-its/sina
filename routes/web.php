@@ -21,6 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
+    // Progress tracking route
+    Route::get('/progress', [App\Http\Controllers\ProgressController::class, 'index'])->name('progress');
+    
     // User book browsing routes
     Route::get('/buku', [BukuUserController::class, 'index'])->name('buku.index');
     Route::get('/buku/{buku}', [BukuUserController::class, 'show'])->name('buku.show');

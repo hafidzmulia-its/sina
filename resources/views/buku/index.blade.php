@@ -3,8 +3,9 @@
     <style>
         .book-card {
             background: white;
+            /* keep visual card shape, but DO NOT clip child images so PNG rounded corners remain visible */
             border-radius: 16px;
-            overflow: hidden;
+            /* removed overflow: hidden so PNG transparent corners are preserved */
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
@@ -16,8 +17,13 @@
 
         .book-cover {
             width: 100%;
-            height: 240px;
+            /* enforce the book cover intrinsic ratio of 488x724 -> approx 0.673
+               Use aspect-ratio so height scales correctly while maintaining ratio */
+            aspect-ratio: 488 / 724;
             object-fit: cover;
+            /* do not inherit border-radius from the parent; keep image corners from the PNG itself */
+            border-radius: 0;
+            display: block;
         }
 
         .filter-button {
@@ -75,6 +81,126 @@
         .clear-search:hover {
             background: rgba(255, 255, 255, 0.3);
             color: white;
+        }
+
+        /* Pagination Styles */
+        .per-page-btn {
+            padding: 0.5rem 0.875rem;
+            border-radius: 20px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            min-width: 45px;
+            justify-content: center;
+        }
+
+        .per-page-btn.active {
+            background: #0d9488;
+            border-color: #0d9488;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+        }
+
+        .per-page-btn:hover:not(.active) {
+            border-color: #0d9488;
+            color: #0d9488;
+            transform: translateY(-1px);
+        }
+
+        .pagination-btn {
+            padding: 0.75rem 1.25rem;
+            border-radius: 25px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn:hover:not(.disabled) {
+            border-color: #0d9488;
+            color: #0d9488;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            color: #9ca3af;
+            border-color: #e5e7eb;
+        }
+
+        .page-number {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .page-number:hover:not(.active) {
+            border-color: #0d9488;
+            color: #0d9488;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+        }
+
+        .page-number.active {
+            background: #0d9488;
+            border-color: #0d9488;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(13, 148, 136, 0.25);
+        }
+
+        .page-ellipsis {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .page-jump-input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .page-jump-input:focus {
+            outline: none;
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
         }
     </style>
     
@@ -149,9 +275,121 @@
                 @endforeach
             </div>
 
-            <!-- Pagination -->
-            <div class="flex justify-center">
-                {{ $bukus->appends(request()->query())->links() }}
+            <!-- Pagination Section -->
+            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <!-- Items Per Page Selector -->
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+                    <div class="flex items-center space-x-3 mb-4 sm:mb-0">
+                        <span class="text-sm text-gray-600 font-inter">Tampilkan:</span>
+                        <div class="flex space-x-2">
+                            @foreach([10, 20, 50] as $perPage)
+                                <a href="{{ route('buku.index', array_merge(request()->query(), ['per_page' => $perPage, 'page' => 1])) }}" 
+                                   class="per-page-btn {{ request('per_page', 10) == $perPage ? 'active' : '' }}">
+                                    {{ $perPage }}
+                                </a>
+                            @endforeach
+                            <a href="{{ route('buku.index', array_merge(request()->query(), ['per_page' => 'all', 'page' => 1])) }}" 
+                               class="per-page-btn {{ request('per_page') == 'all' ? 'active' : '' }}">
+                                Semua
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Info -->
+                    <div class="text-sm text-gray-600 font-inter">
+                        @if(request('per_page') !== 'all')
+                            Menampilkan {{ $bukus->firstItem() ?? 0 }} - {{ $bukus->lastItem() ?? 0 }} dari {{ $bukus->total() ?? $bukus->count() }} buku
+                        @else
+                            Menampilkan semua {{ $bukus->count() }} buku
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Custom Pagination Links -->
+                @if(request('per_page') !== 'all' && $bukus->hasPages())
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    <div class="flex items-center space-x-2 mb-4 sm:mb-0">
+                        <!-- Previous Button -->
+                        @if($bukus->onFirstPage())
+                            <span class="pagination-btn disabled">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Sebelumnya
+                            </span>
+                        @else
+                            <a href="{{ $bukus->appends(request()->query())->previousPageUrl() }}" class="pagination-btn">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Sebelumnya
+                            </a>
+                        @endif
+
+                        <!-- Page Numbers -->
+                        <div class="flex space-x-1">
+                            @php
+                                $currentPage = $bukus->currentPage();
+                                $lastPage = $bukus->lastPage();
+                                $startPage = max(1, $currentPage - 2);
+                                $endPage = min($lastPage, $currentPage + 2);
+                            @endphp
+
+                            @if($startPage > 1)
+                                <a href="{{ $bukus->appends(request()->query())->url(1) }}" class="page-number">1</a>
+                                @if($startPage > 2)
+                                    <span class="page-ellipsis">...</span>
+                                @endif
+                            @endif
+
+                            @for($page = $startPage; $page <= $endPage; $page++)
+                                @if($page == $currentPage)
+                                    <span class="page-number active">{{ $page }}</span>
+                                @else
+                                    <a href="{{ $bukus->appends(request()->query())->url($page) }}" class="page-number">{{ $page }}</a>
+                                @endif
+                            @endfor
+
+                            @if($endPage < $lastPage)
+                                @if($endPage < $lastPage - 1)
+                                    <span class="page-ellipsis">...</span>
+                                @endif
+                                <a href="{{ $bukus->appends(request()->query())->url($lastPage) }}" class="page-number">{{ $lastPage }}</a>
+                            @endif
+                        </div>
+
+                        <!-- Next Button -->
+                        @if($bukus->hasMorePages())
+                            <a href="{{ $bukus->appends(request()->query())->nextPageUrl() }}" class="pagination-btn">
+                                Selanjutnya
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        @else
+                            <span class="pagination-btn disabled">
+                                Selanjutnya
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
+                        @endif
+                    </div>
+
+                    <!-- Quick Page Jump -->
+                    @if($bukus->lastPage() > 5)
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">Ke halaman:</span>
+                        <input type="number" 
+                               min="1" 
+                               max="{{ $bukus->lastPage() }}" 
+                               value="{{ $bukus->currentPage() }}"
+                               class="page-jump-input"
+                               onchange="jumpToPage(this.value)">
+                    </div>
+                    @endif
+                </div>
+                @endif
             </div>
             @else
             <!-- Empty State -->
@@ -184,6 +422,14 @@
     <script>
         function viewBook(bookId) {
             window.location.href = `/buku/${bookId}`;
+        }
+
+        function jumpToPage(page) {
+            if (page && page >= 1 && page <= {{ $bukus->lastPage() ?? 1 }}) {
+                const url = new URL(window.location);
+                url.searchParams.set('page', page);
+                window.location.href = url.toString();
+            }
         }
     </script>
 </x-app-layout>

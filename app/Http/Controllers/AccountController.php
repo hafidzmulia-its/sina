@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
@@ -225,30 +226,34 @@ class AccountController extends Controller
         // Handle parent-child relationship changes
         $oldUsername = $account->username;
         
-        $account->update($updateData);
+        // Use database transaction to ensure all operations succeed together
+        DB::transaction(function () use ($account, $updateData, $validated, $oldUsername) {
+            // Update the account - histories will be updated automatically by CASCADE constraint
+            $account->update($updateData);
 
-        // Update children's parent_user_username if username changed
-        if ($oldUsername !== $validated['username']) {
-            User::where('parent_user_username', $oldUsername)
-                ->update(['parent_user_username' => $validated['username']]);
-        }
+            // Update children's parent_user_username if username changed
+            if ($oldUsername !== $validated['username']) {
+                User::where('parent_user_username', $oldUsername)
+                    ->update(['parent_user_username' => $validated['username']]);
+            }
 
-        // Handle orangtua role child linking
-        if ($validated['role'] === 'orangtua') {
-            // Remove old child relationship
-            User::where('parent_user_username', $account->username)
-                ->update(['parent_user_username' => null]);
-            
-            // Add new child relationship if provided
-            if (!empty($validated['child_username'])) {
-                $childUser = User::where('username', $validated['child_username'])->first();
-                if ($childUser) {
-                    $childUser->update([
-                        'parent_user_username' => $account->username
-                    ]);
+            // Handle orangtua role child linking
+            if ($validated['role'] === 'orangtua') {
+                // Remove old child relationship
+                User::where('parent_user_username', $account->username)
+                    ->update(['parent_user_username' => null]);
+                
+                // Add new child relationship if provided
+                if (!empty($validated['child_username'])) {
+                    $childUser = User::where('username', $validated['child_username'])->first();
+                    if ($childUser) {
+                        $childUser->update([
+                            'parent_user_username' => $account->username
+                        ]);
+                    }
                 }
             }
-        }
+        });
 
         $type = in_array($validated['role'], ['admin', 'superadmin']) ? 'admins' : 'users';
         
@@ -268,11 +273,15 @@ class AccountController extends Controller
             return redirect()->back()->with('error', 'Tidak dapat menghapus akun sendiri!');
         }
         
-        // Remove parent relationship from children
-        User::where('parent_user_username', $account->username)
-            ->update(['parent_user_username' => null]);
-        
-        $account->delete();
+        // Use database transaction to ensure safe deletion
+        DB::transaction(function () use ($account) {
+            // Remove parent relationship from children
+            User::where('parent_user_username', $account->username)
+                ->update(['parent_user_username' => null]);
+            
+            // Delete the account - histories will be deleted automatically by CASCADE constraint
+            $account->delete();
+        });
         
         return redirect()->route('account.index')
                        ->with('success', 'Akun berhasil dihapus!');

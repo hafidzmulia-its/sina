@@ -39,7 +39,9 @@
                 <!-- Navigation Links -->
                 <div class="flex space-x-12">
                     <a href="{{ route('buku.index') }}" class="text-teal-600 font-medium font-dmsans hover:text-teal-700 transition">Jenis Buku</a>
-                    <a href="#" class="text-teal-600 font-medium font-dmsans hover:text-teal-700 transition">Progress</a>
+                    @if(Auth::user()->isAnak() || Auth::user()->isOrangTua())
+                        <a href="{{ route('progress') }}" class="text-teal-600 font-medium font-dmsans hover:text-teal-700 transition">Progress</a>
+                    @endif
                 </div>
 
                 <!-- Profile Section -->
@@ -128,7 +130,7 @@
         <!-- Mobile Navigation Links -->
         <div class="pt-2 pb-3 space-y-1 font-dmsans">
             <a href="{{ route('buku.index') }}" class="block px-4 py-2 text-base font-medium text-teal-600 hover:text-teal-700 hover:bg-gray-50 transition">Jenis Buku</a>
-            <a href="#" class="block px-4 py-2 text-base font-medium text-teal-600 hover:text-teal-700 hover:bg-gray-50 transition">Progress</a>
+            <a href="{{ route('progress') }}" class="block px-4 py-2 text-base font-medium text-teal-600 hover:text-teal-700 hover:bg-gray-50 transition">Progress</a>
         </div>
 
         <!-- Mobile Profile Section -->

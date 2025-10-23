@@ -1,4 +1,46 @@
 <x-app-layout>
+    <style>
+        .book-cover-container {
+            background: white;
+            border-radius: 24px;
+            /* removed overflow: hidden so PNG rounded corners aren't clipped */
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+
+        .book-cover-image {
+            width: 100%;
+            /* enforce the book cover intrinsic ratio of 488x724 */
+            aspect-ratio: 488 / 724;
+            object-fit: cover;
+            /* do not add border-radius; keep PNG's own rounded corners */
+            border-radius: 0;
+            display: block;
+        }
+
+        .related-book-cover {
+            width: 100%;
+            aspect-ratio: 488 / 724;
+            object-fit: cover;
+            border-radius: 0;
+            display: block;
+        }
+
+        .related-book-card {
+            background: white;
+            border-radius: 16px;
+            /* removed overflow: hidden so PNG rounded corners aren't clipped */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .related-book-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    
     <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
         <div class="max-w-6xl mx-auto">
             
@@ -14,11 +56,11 @@
                 
                 <!-- Book Cover -->
                 <div class="lg:w-1/3">
-                    <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
+                    <div class="book-cover-container">
                         <img 
                             src="{{ $buku->cover ? asset($buku->cover) : asset('images/default-book-cover.png') }}" 
                             alt="{{ $buku->judul }}"
-                            class="w-full h-96 object-cover"
+                            class="book-cover-image"
                         />
                     </div>
                 </div>
@@ -130,15 +172,15 @@
             <!-- Related Books -->
             @if($relatedBooks->count() > 0)
             <div class="mt-12">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6 font-comfortaa">Cerita {{ $buku->jenis }} Lainnya</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 font-fredoka">Cerita {{ $buku->jenis }} Lainnya</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
                     @foreach($relatedBooks as $related)
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                    <div class="related-book-card"
                          onclick="window.location.href='{{ route('buku.show', $related) }}'">
                         <img 
                             src="{{ $related->cover ? asset($related->cover) : asset('images/default-book-cover.png') }}" 
                             alt="{{ $related->judul }}"
-                            class="w-full h-32 object-cover"
+                            class="related-book-cover"
                         />
                         <div class="p-3">
                             <h3 class="font-semibold text-gray-900 text-xs mb-1 line-clamp-2">
