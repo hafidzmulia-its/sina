@@ -167,7 +167,7 @@
                                         <div class="ml-3 flex-1 min-w-0">
                                             <h5 class="text-sm font-medium text-gray-800 truncate">{{ $activity->buku->judul }}</h5>
                                             <p class="text-xs text-gray-600">
-                                                {{ $activity->getProgressPercentage() }}% complete
+                                               {{ number_format($activity->getProgressPercentage(), 0) }}% complete
                                             </p>
                                             <p class="text-xs text-gray-500">{{ $activity->tanggal_record->format('d M Y') }}</p>
                                         </div>

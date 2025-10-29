@@ -178,7 +178,7 @@
                         <div class="ml-4 flex-1">
                             <h4 class="font-semibold text-gray-800 font-inter">{{ $activity->buku->judul }}</h4>
                             <p class="text-sm text-gray-600">
-                                Progress: {{ $activity->getProgressPercentage() }}% 
+                                Progress: {{ number_format($activity->getProgressPercentage(), 0) }}% 
                                 ({{ $activity->progress }}/{{ $activity->target }} halaman)
                             </p>
                             <p class="text-xs text-gray-500">{{ $activity->tanggal_record->format('d M Y') }}</p>
@@ -201,7 +201,7 @@
             @endif
 
             <!-- Motivational Section -->
-            <div class="mt-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 text-center text-white">
+            <div class="mt-8 bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl p-8 text-center text-white">
                 <h3 class="text-2xl font-bold mb-4 font-fredoka">Terus Semangat Membaca!</h3>
                 <p class="text-lg mb-6 font-comfortaa">
                     @if($completionRate >= 80)

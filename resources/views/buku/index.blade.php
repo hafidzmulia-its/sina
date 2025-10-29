@@ -205,7 +205,7 @@
     </style>
     
     <main class="py-8 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto">
+        <div class="w-4/5 mx-auto">
             <!-- Header -->
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 font-comfortaa mb-4">
@@ -254,7 +254,7 @@
 
             <!-- Books Grid -->
             @if($bukus->count() > 0)
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-8">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5 gap-10 mb-8">
                 @foreach($bukus as $buku)
                 <div class="book-card" onclick="viewBook({{ $buku->id }})">
                     <img 

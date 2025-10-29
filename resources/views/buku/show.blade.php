@@ -42,7 +42,7 @@
     </style>
     
     <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto">
+        <div class="w-4/5 mx-auto">
             
             <!-- Success Message -->
             @if(session('success'))
@@ -52,7 +52,7 @@
             @endif
 
             <!-- Main Content Container -->
-            <div class="flex flex-col lg:flex-row gap-8">
+            <div class="flex flex-col lg:flex-row gap-8 lg:items-center">
                 
                 <!-- Book Cover -->
                 <div class="lg:w-1/3">
@@ -144,7 +144,7 @@
                                     @endif
                                 </button>
                             </form>
-                        </div>
+                        </div>  
 
                         <!-- Reading Stats -->
                         @if($history->progress > 0)

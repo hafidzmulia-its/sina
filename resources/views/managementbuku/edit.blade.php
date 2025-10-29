@@ -1,96 +1,134 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Edit Buku: ') . $managementbuku->judul }}
-            </h2>
-            <a href="{{ route('managementbuku.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                Kembali
-            </a>
-        </div>
-    </x-slot>
+    <div class="h-[calc(100vh-80px)] flex items-center justify-center px-4">
+        <div class="w-4/5 h-[70vh] bg-[#C7D4CE] rounded-[3rem] py-12 shadow-2xl">
+            <div class="h-full flex flex-col">
+                <!-- Header with Back Button -->
+                <div class="flex justify-between items-center mb-8 px-12">
+                    <h2 class="text-2xl font-bold text-gray-800 font-comfortaa">
+                        Edit Buku: {{ $managementbuku->judul }}
+                    </h2>
+                    <a href="{{ route('managementbuku.index') }}" class="bg-[#A8B5B3] hover:bg-[#95A8A5] text-white font-medium py-2 px-6 rounded-full transition-colors duration-300">
+                        Kembali
+                    </a>
+                </div>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+                <!-- Form Container -->
+                <div class="flex-1 overflow-y-auto px-12 flex items-center">
+                    <form method="POST" action="{{ route('managementbuku.update', $managementbuku) }}" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+                        @csrf
+                        @method('PUT')
                     
                     <form method="POST" action="{{ route('managementbuku.update', $managementbuku) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
+                        
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <!-- Judul Buku -->
+                            <div>
+                                <label for="judul" class="block text-gray-700 font-medium mb-3 font-inter">
+                                    Judul Buku
+                                </label>
+                                <input type="text" 
+                                       name="judul" 
+                                       id="judul" 
+                                       value="{{ old('judul', $managementbuku->judul) }}" 
+                                       placeholder="Ketik judul buku"
+                                       class="w-full bg-white rounded-2xl border-0 px-4 py-3 text-gray-700 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#46798E] focus:outline-none font-inter" 
+                                       required>
+                                @error('judul')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                        <!-- Judul -->
-                        <div class="mb-6">
-                            <label for="judul" class="block text-sm font-medium text-gray-700 mb-2">Judul Buku</label>
-                            <input type="text" name="judul" id="judul" value="{{ old('judul', $managementbuku->judul) }}" 
-                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
-                                   required>
-                            @error('judul')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                            <!-- Jenis -->
+                            <div>
+                                <label for="jenis" class="block text-gray-700 font-medium mb-3 font-inter">
+                                    Jenis
+                                </label>
+                                <select name="jenis" 
+                                        id="jenis" 
+                                        class="w-full bg-white rounded-2xl border-0 px-4 py-3 text-gray-700 shadow-sm focus:ring-2 focus:ring-[#46798E] focus:outline-none font-inter appearance-none" 
+                                        required>
+                                    <option value="">Pilih</option>
+                                    @foreach($jenisOptions as $option)
+                                        <option value="{{ $option }}" {{ old('jenis', $managementbuku->jenis) == $option ? 'selected' : '' }}>
+                                            {{ $option }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('jenis')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                        <!-- Jenis -->
-                        <div class="mb-6">
-                            <label for="jenis" class="block text-sm font-medium text-gray-700 mb-2">Jenis Buku</label>
-                            <select name="jenis" id="jenis" 
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
-                                    required>
-                                <option value="">Pilih Jenis Buku</option>
-                                @foreach($jenisOptions as $option)
-                                    <option value="{{ $option }}" {{ old('jenis', $managementbuku->jenis) == $option ? 'selected' : '' }}>
-                                        {{ $option }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('jenis')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                            <!-- Current Cover Display -->
+                            @if($managementbuku->cover)
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-3 font-inter">Cover Saat Ini</label>
+                                <img src="{{ asset($managementbuku->cover) }}" alt="{{ $managementbuku->judul }}" class="h-32 w-24 object-cover rounded-xl border shadow-sm">
+                            </div>
+                            @endif
 
-                        <!-- Current Cover -->
-                        @if($managementbuku->cover)
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Cover Saat Ini</label>
-                            <img src="{{ asset($managementbuku->cover) }}" alt="{{ $managementbuku->judul }}" class="h-32 w-24 object-cover rounded border">
-                        </div>
-                        @endif
-
-                        <!-- Cover Image -->
-                        <div class="mb-6">
-                            <label for="cover" class="block text-sm font-medium text-gray-700 mb-2">
-                                {{ $managementbuku->cover ? 'Ganti Cover Buku (Opsional)' : 'Cover Buku' }}
-                            </label>
-                            <input type="file" name="cover" id="cover" accept="image/*"
-                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
-                                   onchange="previewImage(this)">
-                            @error('cover')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                            <p class="mt-1 text-sm text-gray-500">Format yang didukung: JPEG, PNG, JPG, GIF (Max: 2MB)</p>
-                            
-                            <!-- Image Preview -->
-                            <div id="imagePreview" class="mt-4 hidden">
-                                <img id="preview" src="#" alt="Preview" class="h-32 w-24 object-cover rounded border">
+                            <!-- Upload File Cover -->
+                            <div>
+                                <label for="cover" class="block text-gray-700 font-medium mb-3 font-inter">
+                                    {{ $managementbuku->cover ? 'Ganti Cover (Opsional)' : 'Upload File Cover' }}
+                                </label>
+                                <div class="relative">
+                                    <input type="file" 
+                                           name="cover" 
+                                           id="cover" 
+                                           accept="image/*"
+                                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                                           onchange="previewImage(this)">
+                                    <div class="bg-white rounded-2xl border-0 px-4 py-3 shadow-sm flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <span class="text-gray-500 font-inter" id="fileLabel">Pilih File</span>
+                                        <div class="bg-[#46798E] text-white px-4 py-2 rounded-xl text-sm font-medium">
+                                            Browse
+                                        </div>
+                                    </div>
+                                </div>
+                                @error('cover')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                                
+                                <!-- Image Preview -->
+                                <div id="imagePreview" class="mt-4 hidden">
+                                    <img id="preview" src="#" alt="Preview" class="h-32 w-24 object-cover rounded-xl border">
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Sinopsis -->
-                        <div class="mb-6">
-                            <label for="sinopsis" class="block text-sm font-medium text-gray-700 mb-2">Sinopsis</label>
-                            <textarea name="sinopsis" id="sinopsis" rows="6" 
-                                      class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
-                                      required>{{ old('sinopsis', $managementbuku->sinopsis) }}</textarea>
-                            @error('sinopsis')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <!-- Sinopsis -->
+                            <div class="h-4/5 flex flex-col">
+                                <label for="sinopsis" class="block text-gray-700 font-medium mb-3 font-inter">
+                                    Sinopsis
+                                </label>
+                                <textarea name="sinopsis" 
+                                         id="sinopsis" 
+                                         placeholder="Ketik Sinopsis Cerita"
+                                         class="flex-1 w-full bg-white rounded-2xl border-0 px-4 py-3 text-gray-700 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#46798E] focus:outline-none resize-none font-inter" 
+                                         required>{{ old('sinopsis', $managementbuku->sinopsis) }}</textarea>
+                                @error('sinopsis')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                        <!-- Submit Button -->
-                        <div class="flex items-center justify-end">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-                                Update Buku
-                            </button>
+                            <!-- Action Buttons -->
+                            <div class="flex gap-4 justify-end mt-6">
+                                <button type="button" 
+                                        onclick="window.location.href='{{ route('managementbuku.index') }}'"
+                                        class="bg-[#D1B3A6] hover:bg-[#C4A393] text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 font-inter">
+                                    Batal
+                                </button>
+                                <button type="submit" 
+                                        class="bg-[#46798E] hover:bg-[#3A6B7D] text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 font-inter">
+                                    Update Buku
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -100,13 +138,22 @@
 
     <script>
     function previewImage(input) {
+        const fileLabel = document.getElementById('fileLabel');
+        
         if (input.files && input.files[0]) {
+            // Update file label
+            fileLabel.textContent = input.files[0].name;
+            
+            // Show preview
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('preview').src = e.target.result;
                 document.getElementById('imagePreview').classList.remove('hidden');
             }
             reader.readAsDataURL(input.files[0]);
+        } else {
+            fileLabel.textContent = 'Pilih File';
+            document.getElementById('imagePreview').classList.add('hidden');
         }
     }
     </script>

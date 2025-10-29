@@ -1,16 +1,20 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Manajemen Akun') }}
-            </h2>
-            <a href="{{ route('account.create', ['type' => $type]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Tambah Akun Baru
-            </a>
+    <!-- Header Section -->
+    <div class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-3xl font-bold text-gray-900 font-comfortaa">
+                    Manajemen Akun
+                </h2>
+                <a href="{{ route('account.create', ['type' => $type]) }}" 
+                   class="bg-[#46798E] hover:bg-[#3A6B7D] text-white font-medium py-3 px-6 rounded-full transition-colors duration-300 font-inter">
+                    Tambah Akun Baru
+                </a>
+            </div>
         </div>
-    </x-slot>
+    </div>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">

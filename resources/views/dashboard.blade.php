@@ -187,7 +187,8 @@
                 box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
                 overflow: hidden;
                 position: relative;
-                max-width: 1000px;
+                width: 80%;
+                height: 80vh;
                 margin: 0 auto;
             }
             
@@ -204,23 +205,23 @@
             .content-overlay {
                 position: relative;
                 z-index: 10;
-                padding: 3rem;
-                min-height: 400px;
+                padding: 6% 8%;
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
             }
             
             .story-title {
-                font-size: 6rem;
+                font-size: clamp(4.5rem, 12vw, 9rem);
                 line-height: 0.9;
-                margin-bottom: 1.5rem;
+                margin-bottom: 3%;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
             }
             
             .title-main {
                 color: #247E2B;
-                font-weight: bold;
+                font-weight: medium;
                 transform: rotate(-2deg);
                 display: inline-block;
                 margin-right: 0.5rem;
@@ -228,17 +229,17 @@
             
             .title-sub {
                 color: #DD610E;
-                font-weight: bold;
+                font-weight: medium;
                 transform: rotate(1deg);
                 display: inline-block;
             }
             
             .story-synopsis {
                 color: #374151;
-                font-size: 1rem;
+                font-size: clamp(1rem, 1.5vw, 1.25rem);
                 line-height: 1.6;
-                margin-bottom: 2rem;
-                max-width: 500px;
+                margin-bottom: 5%;
+                max-width: 45%;
                 font-family: 'Inter', sans-serif;
             }
             
@@ -247,10 +248,11 @@
                 color: #2d5016;
                 border: none;
                 border-radius: 9999px;
-                padding: 12px 0 12px 0;
+                padding: 1.5% 0;
+                width: 35%;
                 font-family: 'Comfortaa', sans-serif;
                 font-weight: 600;
-                font-size: 1rem;
+                font-size: clamp(0.875rem, 1.1vw, 1rem);
                 cursor: pointer;
                 transition: all 0.3s ease;
                 align-self: flex-start;
@@ -458,17 +460,15 @@
 
             @media (max-width: 768px) {
                 .content-overlay {
-                    padding: 2rem 1.5rem;
-                    min-height: 350px;
-                }
-                
-                .story-title {
-                    font-size: 3rem;
+                    padding: 5% 6%;
                 }
                 
                 .story-synopsis {
-                    font-size: 0.9rem;
-                    margin-bottom: 1.5rem;
+                    max-width: 70%;
+                }
+
+                .read-button {
+                    width: 45%;
                 }
 
                 .book-types {
@@ -487,13 +487,16 @@
             }
             
             @media (max-width: 480px) {
-                .story-title {
-                    font-size: 2.5rem;
+                .content-overlay {
+                    padding: 4% 5%;
                 }
                 
-                .content-overlay {
-                    padding: 1.5rem 1rem;
-                    min-height: 300px;
+                .story-synopsis {
+                    max-width: 80%;
+                }
+
+                .read-button {
+                    width: 60%;
                 }
 
                 .book-types {
@@ -567,9 +570,9 @@
             @include('layouts.navigation')
 
             <!-- Page Content -->
-            <main class="py-8 px-4 sm:px-6 lg:px-8">
+            <main class="px-4 sm:px-6 lg:px-8 flex items-center justify-center min-h-[80vh]">
                 <!-- Featured Story Card -->
-                <div class="dashboard-card mb-12">
+                <div class="dashboard-card">
                     <!-- Background Image -->
                     <img 
                         src="{{ asset('images/landingpage.png') }}" 
@@ -607,7 +610,7 @@
             </main>
         </div>
         <!-- Recent Reading History -->
-        <div class="p-8 max-w-7xl mx-auto">
+        <div class="p-8 w-4/5 mx-auto">
                 @if($recentHistory->count() > 0)
                 <section class="mb-12">
                     <h2 class="text-3xl font-bold text-gray-800 mb-4 font-fredoka">Terakhir dibaca</h2>
@@ -678,7 +681,7 @@
 
         <!-- Recommendations & Quote Section -->
         <div class="bg-gradient-to-b from-[#C7D4CE] to-[#F9FBFA] pt-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="w-4/5 mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <!-- Recommendations Section -->
                 <section >
@@ -720,9 +723,9 @@
                     @endif
                     
                     <!-- Quote & Footer Section with Illustration -->
-                    <div class="relative min-h-96">
+                    <div class="relative min-h-96 flex flex-col justify-end">
                         <!-- Quote Section (1/2 width) -->
-                        <div class="w-1/2 pr-8 mb-16">
+                        <div class="w-1/2 pr-8 mb-8">
                             <div class="quote-section">
                                 <blockquote class="text-2xl md:text-3xl font-comfortaa text-[#46798E] mb-6 relative z-20">
                                     "Membaca memberikan manusia <span class="text-[#FF7262] font-bold">tempat untuk pergi</span> ketika mereka harus tinggal di mana mereka berada."
@@ -731,9 +734,9 @@
                             </div>
                         </div>
                         
-                        <!-- Footer Section (2/3 width) -->
-                        <div class="w-3/5 bg-nav rounded-tr-2xl h-3xl ">
-                            <footer class="p-8 relative z-20 ">
+                        <!-- Footer Section - Always at bottom -->
+                        <div class="w-1/2 bg-nav rounded-tr-2xl mt-auto">
+                            <footer class="p-8 relative z-20">
                                 <div class="flex flex-col md:flex-row justify-between items-start">
                                     
                                     <!-- Logo and Brand -->
