@@ -2,7 +2,7 @@
     "outputDirectory": "public",
     "functions": {
         "api/*.php": {
-            "runtime": "vercel-php@0.7.1"
+            "runtime": "vercel-php"
         }
     },
     "routes": [
@@ -43,5 +43,5 @@
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
     },
-    "buildCommand": "npm ci && npm run build"
+    "buildCommand": "npm install && npm run build"
 }
