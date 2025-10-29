@@ -1,10 +1,18 @@
 {
     "functions": {
-        "app/api/*.php": {
+        "api/*.php": {
             "runtime": "vercel-php@0.6.0"
         }
     },
     "routes": [
+        {
+            "src": "/build/(.*)",
+            "headers": { "cache-control": "max-age=31536000" }
+        },
+        {
+            "src": "/(css|js|images|fonts)/(.*)",
+            "headers": { "cache-control": "max-age=31536000" }
+        },
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
