@@ -1,0 +1,9 @@
+# Vercel ignore file
+.env.local
+.env.example
+README.md
+tests/
+storage/logs/
+storage/debugbar/
+node_modules/
+.git/

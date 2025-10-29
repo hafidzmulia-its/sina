@@ -13,12 +13,20 @@
                 </div>
 
                 <!-- Form Container -->
-                <div class="flex-1 overflow-y-auto px-12 flex items-center">
+                <div class="flex-1 overflow-y-auto px-12">
+                    <!-- Error Messages -->
+                    @if ($errors->any())
+                        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                            <div class="font-bold">Ada kesalahan:</div>
+                            <ul class="mt-2 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('managementbuku.update', $managementbuku) }}" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
-                        @csrf
-                        @method('PUT')
-                    
-                    <form method="POST" action="{{ route('managementbuku.update', $managementbuku) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         
@@ -66,7 +74,7 @@
                             @if($managementbuku->cover)
                             <div>
                                 <label class="block text-gray-700 font-medium mb-3 font-inter">Cover Saat Ini</label>
-                                <img src="{{ asset($managementbuku->cover) }}" alt="{{ $managementbuku->judul }}" class="h-32 w-24 object-cover rounded-xl border shadow-sm">
+                                <img src="{{ $managementbuku->cover }}" alt="{{ $managementbuku->judul }}" class="h-32 w-24 object-cover rounded-xl border shadow-sm">
                             </div>
                             @endif
 

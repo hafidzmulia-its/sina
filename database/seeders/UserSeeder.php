@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
             'name' => 'Admin Two',
             'username' => 'admin2',
             'email' => 'admin2@gmail.com',
-            'password' => Hash::make('admin9876'),
+            'password' => Hash::make('password'),
             'role' => 'admin',
             'parent_user_username' => null,
         ]);
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             'name' => 'Amir',
             'username' => 'anak_amir',
             'email' => 'amir.child@domain.com',
-            'password' => Hash::make('hash_child1'),
+            'password' => Hash::make('password'),
             'role' => 'anak',
             'parent_user_username' => null,
         ]);
@@ -61,7 +61,7 @@ class UserSeeder extends Seeder
             'name' => 'Bela',
             'username' => 'anak_bela',
             'email' => 'bela.child@domain.com',
-            'password' => Hash::make('hash_child2'),
+            'password' => Hash::make('password'),
             'role' => 'anak',
             'parent_user_username' => null,
         ]);
@@ -70,7 +70,7 @@ class UserSeeder extends Seeder
             'name' => 'Rio Junior',
             'username' => 'rio_junior',
             'email' => 'rio.junior@domain.com',
-            'password' => Hash::make('hash_child3'),
+            'password' => Hash::make('password'),
             'role' => 'anak',
             'parent_user_username' => null,
         ]);
@@ -79,7 +79,7 @@ class UserSeeder extends Seeder
             'name' => 'Sasa Kecil',
             'username' => 'sasa_kecil',
             'email' => 'sasa.kecil@domain.com',
-            'password' => Hash::make('hash_child4'),
+            'password' => Hash::make('password'),
             'role' => 'anak',
             'parent_user_username' => null,
         ]);
@@ -88,7 +88,7 @@ class UserSeeder extends Seeder
             'name' => 'Udin Siwa',
             'username' => 'udin_siwa',
             'email' => 'udin.siwa@domain.com',
-            'password' => Hash::make('hash_child5'),
+            'password' => Hash::make('password'),
             'role' => 'anak',
             'parent_user_username' => null,
         ]);
@@ -98,7 +98,7 @@ class UserSeeder extends Seeder
             'name' => 'Bapak Andi',
             'username' => 'bapak_andi',
             'email' => 'andi.ayah@domain.com',
-            'password' => Hash::make('hash_parent1'),
+            'password' => Hash::make('password'),
             'role' => 'orangtua',
             'parent_user_username' => 'admin1', // References admin1 username
         ]);
@@ -107,7 +107,7 @@ class UserSeeder extends Seeder
             'name' => 'Ibu Santi',
             'username' => 'ibu_santi',
             'email' => 'santi.mama@domain.com',
-            'password' => Hash::make('hash_parent2'),
+            'password' => Hash::make('password'),
             'role' => 'orangtua',
             'parent_user_username' => 'admin2', // References admin2 username
         ]);

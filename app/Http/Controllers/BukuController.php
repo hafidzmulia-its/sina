@@ -8,10 +8,25 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class BukuController extends Controller
 {
-   
+    /**
+     * Extract public_id from Cloudinary URL
+     */
+    private function extractPublicIdFromUrl($url)
+    {
+        if (!$url) return null;
+        
+        // Pattern to match Cloudinary URLs and extract public_id
+        // Example: https://res.cloudinary.com/dnbsz4cvm/image/upload/v1761771275/book-covers/filename.png
+        if (preg_match('/\/upload\/(?:v\d+\/)?(.+)\.(?:jpg|jpeg|png|gif|webp)$/i', $url, $matches)) {
+            return $matches[1];
+        }
+        
+        return null;
+    }
 
     /**
      * Display a listing of the resource.
@@ -94,33 +109,97 @@ class BukuController extends Controller
             Log::info('Validation passed', ['user_id' => auth()->id()]);
 
             // Handle file upload with better error handling
-            if ($request->hasFile('cover')) {
-                $file = $request->file('cover');
+            // if ($request->hasFile('cover')) {
+            //     $file = $request->file('cover');
                 
-                if ($file->isValid()) {
-                    $uploadPath = public_path('images');
-                    if (!file_exists($uploadPath)) {
-                        mkdir($uploadPath, 0755, true);
+            //     if ($file->isValid()) {
+            //         $uploadPath = public_path('images');
+            //         if (!file_exists($uploadPath)) {
+            //             mkdir($uploadPath, 0755, true);
+            //         }
+                    
+            //         $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
+            //         $file->move($uploadPath, $filename);
+            //         $validated['cover'] = 'images/' . $filename;
+                    
+            //         Log::info('File uploaded successfully', [
+            //             'filename' => $filename,
+            //             'user_id' => auth()->id()
+            //         ]);
+            //     } else {
+            //         Log::error('File upload failed', [
+            //             'error' => $file->getError(),
+            //             'user_id' => auth()->id()
+            //         ]);
+            //         return back()->withErrors(['cover' => 'File upload gagal. Silakan coba lagi.'])->withInput();
+            //     }
+            // }
+
+            $coverPath = null;
+            if ($request->hasFile('cover')) {
+                try {
+                    Log::info('Starting Cloudinary upload', [
+                        'file_name' => $request->file('cover')->getClientOriginalName(),
+                        'file_size' => $request->file('cover')->getSize(),
+                        'user_id' => auth()->id()
+                    ]);
+                    
+                    // Use HTTP client approach like in migration (SSL bypass)
+                    $cloudName = config('cloudinary.cloud_name');
+                    $apiKey = config('cloudinary.api_key');
+                    $apiSecret = config('cloudinary.api_secret');
+                    $timestamp = time();
+                    $publicId = 'book-covers/book_' . $timestamp . '_' . uniqid();
+                    
+                    // Generate signature
+                    $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
+                    
+                    $response = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+                        ->asMultipart()
+                        ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
+                            'file' => fopen($request->file('cover')->getRealPath(), 'r'),
+                            'public_id' => $publicId,
+                            'api_key' => $apiKey,
+                            'timestamp' => $timestamp,
+                            'signature' => $signature
+                        ]);
+                    
+                    if (!$response->successful()) {
+                        throw new Exception('Cloudinary upload failed: ' . $response->body());
                     }
                     
-                    $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
-                    $file->move($uploadPath, $filename);
-                    $validated['cover'] = 'images/' . $filename;
+                    $uploadResult = $response->json();
                     
-                    Log::info('File uploaded successfully', [
-                        'filename' => $filename,
+                    $coverPath = $uploadResult['secure_url']; // Get the HTTPS URL
+                    
+                    Log::info('Cloudinary upload successful', [
+                        'cloudinary_url' => $coverPath,
                         'user_id' => auth()->id()
                     ]);
-                } else {
-                    Log::error('File upload failed', [
-                        'error' => $file->getError(),
+                } catch (Exception $uploadException) {
+                    Log::error('Cloudinary upload failed', [
+                        'error' => $uploadException->getMessage(),
+                        'trace' => $uploadException->getTraceAsString(),
                         'user_id' => auth()->id()
                     ]);
-                    return back()->withErrors(['cover' => 'File upload gagal. Silakan coba lagi.'])->withInput();
+                    return back()->withErrors(['cover' => 'Upload gambar gagal: ' . $uploadException->getMessage()])->withInput();
                 }
             }
-
-            $buku = Buku::create($validated);
+            
+            Log::info('Creating book with data', [
+                'judul' => $request->judul,
+                'jenis' => $request->jenis,
+                'cover_path' => $coverPath,
+                'user_id' => auth()->id()
+            ]);
+            
+            $buku = Buku::create([
+                'judul' => $request->judul,
+                'jenis' => $request->jenis,
+                'sinopsis' => $request->sinopsis,
+                'cover' => $coverPath, // Store the Cloudinary URL
+            ]);
+            
             Log::info('Buku created successfully', [
                 'buku_id' => $buku->id,
                 'user_id' => auth()->id()
@@ -178,15 +257,95 @@ class BukuController extends Controller
         ]);
 
         if ($request->hasFile('cover')) {
-            if ($managementbuku->cover && file_exists(public_path($managementbuku->cover))) {
-                unlink(public_path($managementbuku->cover));
-            }
+            try {
+                // Delete old image from Cloudinary if exists
+                if ($managementbuku->cover) {
+                    try {
+                        // Extract public_id from Cloudinary URL
+                        $publicId = $this->extractPublicIdFromUrl($managementbuku->cover);
+                        if ($publicId) {
+                            // Use HTTP approach for delete (SSL bypass)
+                            $cloudName = config('cloudinary.cloud_name');
+                            $apiKey = config('cloudinary.api_key');
+                            $apiSecret = config('cloudinary.api_secret');
+                            $timestamp = time();
+                            
+                            $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
+                            
+                            $response = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+                                ->asForm()
+                                ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/destroy", [
+                                    'public_id' => $publicId,
+                                    'api_key' => $apiKey,
+                                    'timestamp' => $timestamp,
+                                    'signature' => $signature
+                                ]);
+                            Log::info('Old image deleted from Cloudinary', [
+                                'public_id' => $publicId,
+                                'user_id' => auth()->id()
+                            ]);
+                        }
+                    } catch (Exception $e) {
+                        Log::warning('Failed to delete old image from Cloudinary', [
+                            'error' => $e->getMessage(),
+                            'cover_url' => $managementbuku->cover
+                        ]);
+                    }
+                }
 
-            $file = $request->file('cover');
-            $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
-            $file->move(public_path('images'), $filename);
-            $validated['cover'] = 'images/' . $filename;
+                // Upload new image to Cloudinary
+                Log::info('Starting Cloudinary upload for update', [
+                    'book_id' => $managementbuku->id,
+                    'user_id' => auth()->id()
+                ]);
+                
+                // Use HTTP client approach like in migration (SSL bypass)
+                $cloudName = config('cloudinary.cloud_name');
+                $apiKey = config('cloudinary.api_key');
+                $apiSecret = config('cloudinary.api_secret');
+                $timestamp = time();
+                $publicId = 'book-covers/book_' . $timestamp . '_' . uniqid();
+                
+                // Generate signature
+                $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
+                
+                $response = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+                    ->asMultipart()
+                    ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
+                        'file' => fopen($request->file('cover')->getRealPath(), 'r'),
+                        'public_id' => $publicId,
+                        'api_key' => $apiKey,
+                        'timestamp' => $timestamp,
+                        'signature' => $signature
+                    ]);
+                
+                if (!$response->successful()) {
+                    throw new Exception('Cloudinary upload failed: ' . $response->body());
+                }
+                
+                $uploadResult = $response->json();
+                
+                $validated['cover'] = $uploadResult['secure_url'];
+                
+                Log::info('Update upload successful', [
+                    'new_cover_url' => $validated['cover'],
+                    'user_id' => auth()->id()
+                ]);
+            } catch (Exception $uploadException) {
+                Log::error('Update upload failed', [
+                    'error' => $uploadException->getMessage(),
+                    'trace' => $uploadException->getTraceAsString(),
+                    'user_id' => auth()->id()
+                ]);
+                return back()->withErrors(['cover' => 'Upload gambar gagal: ' . $uploadException->getMessage()])->withInput();
+            }
         }
+
+        Log::info('Updating book with validated data', [
+            'book_id' => $managementbuku->id,
+            'validated_data' => $validated,
+            'user_id' => auth()->id()
+        ]);
 
         $managementbuku->update($validated);
 
@@ -201,8 +360,35 @@ class BukuController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        if ($managementbuku->cover && file_exists(public_path($managementbuku->cover))) {
-            unlink(public_path($managementbuku->cover));
+        // Delete image from Cloudinary if exists
+        if ($managementbuku->cover) {
+            try {
+                // Extract public_id from Cloudinary URL
+                $publicId = $this->extractPublicIdFromUrl($managementbuku->cover);
+                if ($publicId) {
+                    // Use HTTP approach for delete (SSL bypass)
+                    $cloudName = config('cloudinary.cloud_name');
+                    $apiKey = config('cloudinary.api_key');
+                    $apiSecret = config('cloudinary.api_secret');
+                    $timestamp = time();
+                    
+                    $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
+                    
+                    $response = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+                        ->asForm()
+                        ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/destroy", [
+                            'public_id' => $publicId,
+                            'api_key' => $apiKey,
+                            'timestamp' => $timestamp,
+                            'signature' => $signature
+                        ]);
+                }
+            } catch (Exception $e) {
+                Log::warning('Failed to delete image from Cloudinary', [
+                    'error' => $e->getMessage(),
+                    'cover_url' => $managementbuku->cover
+                ]);
+            }
         }
 
         $managementbuku->delete();

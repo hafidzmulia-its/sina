@@ -87,7 +87,7 @@ class BukuSeeder extends Seeder
             [
                 'jenis' => 'Dongeng',
                 'judul' => 'Tiga Babi Kecil',
-                'cover' => 'images/three_pigs.png',
+                'cover' => 'images/threepigs.png',
                 'sinopsis' => 'Tiga ekor babi kecil meninggalkan rumah untuk hidup mandiri. Babi pertama yang malas membangun rumah dari jerami. Babi kedua yang sedikit rajin membangun rumah dari kayu. Dan babi ketiga yang rajin dan tekun membangun rumah dari batu bata. Seekor Serigala besar dan jahat datang dan dengan mudah meniup roboh rumah jerami dan rumah kayu. Kedua babi yang panik berlari dan berlindung di rumah batu bata. Serigala tidak bisa merobohkan rumah batu bata itu, dan akhirnya berhasil dikalahkan.'
             ],
             [

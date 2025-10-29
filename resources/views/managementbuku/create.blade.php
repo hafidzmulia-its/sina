@@ -14,6 +14,18 @@
 
                 <!-- Form Container -->
                 <div class="flex-1 overflow-y-auto px-12">
+                    <!-- Error Messages -->
+                    @if ($errors->any())
+                        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                            <div class="font-bold">Ada kesalahan:</div>
+                            <ul class="mt-2 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('managementbuku.store') }}" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
                         @csrf
                         
