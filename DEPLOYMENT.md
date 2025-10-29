@@ -65,6 +65,8 @@ SESSION_LIFETIME=120
 - CRUD operations are fully integrated with cloud storage
 - SSL is properly configured for Aiven database connection
 - The app is optimized for serverless deployment
+- Vercel PHP runtime automatically handles composer dependencies
+- Build process only runs npm for frontend assets
 
 ## Troubleshooting
 If you encounter issues:
