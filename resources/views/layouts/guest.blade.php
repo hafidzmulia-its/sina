@@ -14,7 +14,11 @@
         <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @if(app()->environment('production'))
+            {!! vite_assets() !!}
+        @else
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @endif
         
         <style>
             /* Reset for register page only */
