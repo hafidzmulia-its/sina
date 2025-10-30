@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Configure Vite manifest path for production (Vite 7+)
-        Vite::useManifestFilename('build/.vite/manifest.json');
+        Vite::useManifestFilename('.vite/manifest.json');
         
         // Force HTTPS in production only
         if ($this->app->environment('production')) {
