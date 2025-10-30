@@ -2,7 +2,7 @@
 
 if (!function_exists('vite_assets')) {
     function vite_assets() {
-        $manifestPath = public_path('build/manifest.json');
+        $manifestPath = public_path('build/.vite/manifest.json');
         
         if (!file_exists($manifestPath)) {
             return '';
