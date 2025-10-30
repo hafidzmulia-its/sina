@@ -187,9 +187,25 @@
                 box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
                 overflow: hidden;
                 position: relative;
-                width: 80%;
-                height: 80vh;
+                width: 95%;
+                height: auto;
+                min-height: 60vh;
                 margin: 0 auto;
+            }
+            
+            @media (min-width: 640px) {
+                .dashboard-card {
+                    width: 90%;
+                    min-height: 70vh;
+                }
+            }
+            
+            @media (min-width: 1024px) {
+                .dashboard-card {
+                    width: 80%;
+                    height: 80vh;
+                    min-height: auto;
+                }
             }
             
             .background-image {
@@ -205,18 +221,38 @@
             .content-overlay {
                 position: relative;
                 z-index: 10;
-                padding: 6% 8%;
+                padding: 8% 6%;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
             }
             
+            @media (min-width: 640px) {
+                .content-overlay {
+                    padding: 7% 7%;
+                }
+            }
+            
+            @media (min-width: 1024px) {
+                .content-overlay {
+                    padding: 6% 8%;
+                }
+            }
+            
             .story-title {
-                font-size: clamp(4.5rem, 12vw, 9rem);
-                line-height: 0.9;
-                margin-bottom: 3%;
+                font-size: clamp(2.5rem, 8vw, 9rem);
+                line-height: 0.95;
+                margin-bottom: 4%;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            @media (min-width: 640px) {
+                .story-title {
+                    font-size: clamp(3.5rem, 10vw, 9rem);
+                    line-height: 0.9;
+                    margin-bottom: 3%;
+                }
             }
             
             .title-main {
@@ -236,11 +272,25 @@
             
             .story-synopsis {
                 color: #374151;
-                font-size: clamp(1rem, 1.5vw, 1.25rem);
+                font-size: clamp(0.875rem, 2.5vw, 1.25rem);
                 line-height: 1.6;
-                margin-bottom: 5%;
-                max-width: 45%;
+                margin-bottom: 6%;
+                max-width: 90%;
                 font-family: 'Inter', sans-serif;
+            }
+            
+            @media (min-width: 640px) {
+                .story-synopsis {
+                    max-width: 70%;
+                    margin-bottom: 5%;
+                }
+            }
+            
+            @media (min-width: 1024px) {
+                .story-synopsis {
+                    max-width: 45%;
+                    font-size: clamp(1rem, 1.5vw, 1.25rem);
+                }
             }
             
             .read-button {
@@ -248,15 +298,30 @@
                 color: #2d5016;
                 border: none;
                 border-radius: 9999px;
-                padding: 1.5% 0;
-                width: 35%;
+                padding: 3% 0;
+                width: 70%;
                 font-family: 'Comfortaa', sans-serif;
                 font-weight: 600;
-                font-size: clamp(0.875rem, 1.1vw, 1rem);
+                font-size: clamp(0.875rem, 2.5vw, 1rem);
                 cursor: pointer;
                 transition: all 0.3s ease;
                 align-self: flex-start;
                 box-shadow: 0 4px 12px rgba(167, 196, 160, 0.4);
+            }
+            
+            @media (min-width: 640px) {
+                .read-button {
+                    width: 50%;
+                    padding: 2.5% 0;
+                }
+            }
+            
+            @media (min-width: 1024px) {
+                .read-button {
+                    width: 35%;
+                    padding: 1.5% 0;
+                    font-size: clamp(0.875rem, 1.1vw, 1rem);
+                }
             }
             
             .read-button:hover {
@@ -268,8 +333,20 @@
             /* History Section Styles */
             .history-carousel-container {
                 position: relative;
-                overflow: visible; /* Allow cards to extend beyond container */
-                padding: 0 60px; /* Add padding for navigation buttons */
+                overflow: visible;
+                padding: 0 50px;
+            }
+            
+            @media (max-width: 768px) {
+                .history-carousel-container {
+                    padding: 0 40px;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .history-carousel-container {
+                    padding: 0 35px;
+                }
             }
             
             .history-carousel {
@@ -289,15 +366,22 @@
                 background: rgba(255, 255, 255, 0.9);
                 border: 2px solid #e5e7eb;
                 border-radius: 50%;
-                width: 48px;
-                height: 48px;
+                width: 40px;
+                height: 40px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
                 transition: all 0.3s ease;
-                z-index: 20; /* Increased z-index */
+                z-index: 20;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+            
+            @media (min-width: 640px) {
+                .carousel-nav-button {
+                    width: 48px;
+                    height: 48px;
+                }
             }
             
             .carousel-nav-button:hover {
@@ -347,12 +431,22 @@
             /* Uniform Card Styles for both History and Recommendations */
             .uniform-card {
                 flex: none;
-                /* background: white; */
                 border-radius: 16px;
-                /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); */
                 transition: all 0.3s ease;
                 cursor: pointer;
-                width: 16rem; /* 256px - consistent width */
+                width: 13rem;
+            }
+            
+            @media (min-width: 640px) {
+                .uniform-card {
+                    width: 14rem;
+                }
+            }
+            
+            @media (min-width: 1024px) {
+                .uniform-card {
+                    width: 16rem;
+                }
             }
 
             .uniform-card:hover {
@@ -394,22 +488,48 @@
             /* Book Types Section */
             .book-types {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 2rem;
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
                 margin-top: 2rem;
-                padding: 0 2rem;
+                padding: 0 1rem;
                 justify-items: center;
+            }
+            
+            @media (min-width: 640px) {
+                .book-types {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.75rem;
+                    padding: 0 1.5rem;
+                }
+            }
+            
+            @media (min-width: 1024px) {
+                .book-types {
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 2rem;
+                    padding: 0 2rem;
+                }
             }
 
             .book-type-card {
                 position: relative;
-                /* border-radius: 24px; */
                 overflow: hidden;
-                aspect-ratio: 1 / 1; /* Make it square */
-                width: 80%;
+                aspect-ratio: 1 / 1;
+                width: 90%;
                 cursor: pointer;
                 transition: all 0.3s ease;
-                /* box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.15); */
+            }
+            
+            @media (min-width: 640px) {
+                .book-type-card {
+                    width: 85%;
+                }
+            }
+            
+            @media (min-width: 1024px) {
+                .book-type-card {
+                    width: 80%;
+                }
             }
 
             .book-type-card:hover {
@@ -460,39 +580,11 @@
 
             @media (max-width: 768px) {
                 .content-overlay {
-                    padding: 5% 6%;
+                    padding: 6% 5%;
                 }
                 
                 .story-synopsis {
-                    max-width: 70%;
-                }
-
-                .read-button {
-                    width: 45%;
-                }
-
-                .book-types {
-                    grid-template-columns: 1fr;
-                    gap: 1.5rem;
-                    padding: 0 0.5rem;
-                }
-
-                .book-type-title {
-                    font-size: 1.75rem;
-                }
-
-                .book-type-overlay {
-                    padding: 1.5rem 1.5rem 1.5rem;
-                }
-            }
-            
-            @media (max-width: 480px) {
-                .content-overlay {
-                    padding: 4% 5%;
-                }
-                
-                .story-synopsis {
-                    max-width: 80%;
+                    max-width: 85%;
                 }
 
                 .read-button {
@@ -501,8 +593,44 @@
 
                 .book-types {
                     grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                    padding: 0 1rem;
+                }
+
+                .book-type-title {
+                    font-size: 1.875rem;
+                }
+
+                .book-type-overlay {
+                    padding: 1.75rem 1.5rem 1.75rem;
+                }
+                
+                .carousel-container {
+                    padding: 0 45px;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .content-overlay {
+                    padding: 5% 4%;
+                }
+                
+                .story-synopsis {
+                    max-width: 95%;
+                    font-size: 0.875rem;
+                }
+
+                .read-button {
+                    width: 75%;
+                    padding: 4% 0;
+                    font-size: 0.875rem;
+                }
+
+                .book-types {
+                    grid-template-columns: 1fr;
                     gap: 1.25rem;
                     margin-top: 1.5rem;
+                    padding: 0 0.5rem;
                 }
 
                 .book-type-title {
@@ -511,6 +639,24 @@
 
                 .book-type-count {
                     font-size: 0.8rem;
+                }
+                
+                .book-type-overlay {
+                    padding: 1.5rem 1.25rem;
+                }
+                
+                .carousel-container {
+                    padding: 0 35px;
+                }
+                
+                .carousel-nav-button {
+                    width: 36px;
+                    height: 36px;
+                }
+                
+                .carousel-nav-button svg {
+                    width: 16px;
+                    height: 16px;
                 }
             }
             
@@ -543,13 +689,29 @@
 
             .quote-section blockquote::before {
                 content: '"';
-                font-size: 5rem;
+                font-size: 3rem;
                 color: #0d9488;
                 position: absolute;
-                left: -3rem;
-                top: -2rem;
+                left: -1.5rem;
+                top: -1rem;
                 font-family: Georgia, serif;
                 font-weight: bold;
+            }
+            
+            @media (min-width: 640px) {
+                .quote-section blockquote::before {
+                    font-size: 4rem;
+                    left: -2rem;
+                    top: -1.5rem;
+                }
+            }
+            
+            @media (min-width: 1024px) {
+                .quote-section blockquote::before {
+                    font-size: 5rem;
+                    left: -3rem;
+                    top: -2rem;
+                }
             }
 
             /* Footer */
@@ -610,10 +772,10 @@
             </main>
         </div>
         <!-- Recent Reading History -->
-        <div class="p-8 w-4/5 mx-auto">
+        <div class="p-4 sm:p-6 md:p-8 w-full sm:w-11/12 md:w-4/5 mx-auto">
                 @if($recentHistory->count() > 0)
-                <section class="mb-12">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4 font-fredoka">Terakhir dibaca</h2>
+                <section class="mb-8 sm:mb-10 md:mb-12">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 font-fredoka">Terakhir dibaca</h2>
                     <div class="relative overflow-hidden">
                         <div class="carousel-container">
                             <!-- Carousel Navigation Buttons -->
@@ -638,7 +800,7 @@
                                     />
                                     <div class="uniform-card-content">
                                         <h3 class="uniform-card-title">{{ Str::limit($history->buku->judul, 30) }}</h3>
-                                        <p class="uniform-card-subtitle">{{ $history->getProgressPercentage() }}% selesai</p>
+                                        <p class="uniform-card-subtitle">{{ number_format($history->getProgressPercentage(), 0) }}% selesai</p>
                                     </div>
                                 </div>
                                 @endforeach
@@ -650,7 +812,7 @@
 
                 <!-- Book Types Section -->
                 <section>
-                    <h2 class="text-3xl font-bold text-gray-800 mb-6 font-fredoka">Telusuri berbagai jenis cerita lainnya!</h2>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 font-fredoka">Telusuri berbagai jenis cerita lainnya!</h2>
                     <div class="book-types">
                         @foreach($bookTypes as $type)
                         <div class="book-type-card" onclick="exploreType('{{ $type->jenis }}')">
@@ -680,12 +842,12 @@
         </div>
 
         <!-- Recommendations & Quote Section -->
-        <div class="bg-gradient-to-b from-[#C7D4CE] to-[#F9FBFA] pt-16">
-            <div class="w-4/5 mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-b from-[#C7D4CE] to-[#F9FBFA] pt-12 md:pt-16">
+            <div class="w-full sm:w-11/12 md:w-4/5 mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <!-- Recommendations Section -->
-                <section >
-                    <h2 class="text-3xl font-semibold text-gray-800 mb-8 font-fredoka text-left">Kamu mungkin suka ini</h2>
+                <section>
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 sm:mb-8 font-fredoka text-left">Kamu mungkin suka ini</h2>
                     
                     <!-- Recommended Books Carousel -->
                     @if(isset($popularBooks) && $popularBooks->count() > 0)
@@ -723,53 +885,45 @@
                     @endif
                     
                     <!-- Quote & Footer Section with Illustration -->
-                    <div class="relative min-h-96 flex flex-col justify-end">
-                        <!-- Quote Section (1/2 width) -->
-                        <div class="w-1/2 pr-8 mb-8">
+                    <div class="relative min-h-64 md:min-h-96 flex flex-col justify-end">
+                        <!-- Quote Section -->
+                        <div class="w-full md:w-3/4 lg:w-1/2 pr-4 md:pr-8 mb-8 px-4 md:px-0">
                             <div class="quote-section">
-                                <blockquote class="text-2xl md:text-3xl font-comfortaa text-[#46798E] mb-6 relative z-20">
+                                <blockquote class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-comfortaa text-[#46798E] mb-4 md:mb-6 relative z-20">
                                     "Membaca memberikan manusia <span class="text-[#FF7262] font-bold">tempat untuk pergi</span> ketika mereka harus tinggal di mana mereka berada."
                                 </blockquote>
-                                <cite class="text-gray-500 font-inter font-medium text-lg">-Mason Cooley</cite>
+                                <cite class="text-gray-500 font-inter font-medium text-base md:text-lg">-Mason Cooley</cite>
                             </div>
                         </div>
                         
                         <!-- Footer Section - Always at bottom -->
-                        <div class="w-1/2 bg-nav rounded-tr-2xl mt-auto">
-                            <footer class="p-8 relative z-20">
-                                <div class="flex flex-col md:flex-row justify-between items-start">
+                        <div class="w-full md:w-3/4 lg:w-1/2 bg-nav rounded-tr-2xl mt-auto">
+                            <footer class="p-4 sm:p-6 md:p-8 relative z-20">
+                                <div class="flex flex-col md:flex-row justify-between items-start gap-4">
                                     
                                     <!-- Logo and Brand -->
-                                    <div class="flex items-center mb-4 md:mb-0">
-                                        <img src="{{ asset('images/logo_sina.png') }}" alt="Sina Logo" class="h-8 w-auto mr-3">
-                                        
+                                    <div class="flex items-center mb-2 md:mb-0">
+                                        <img src="{{ asset('images/logo_sina.png') }}" alt="Sina Logo" class="h-6 sm:h-8 w-auto mr-3">
                                     </div>
                                     
                                     <!-- Credits -->
                                     <div class="text-left md:text-right">
-                                        <p class="text-sm text-gray-600 mb-1">
+                                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
                                             Alifa Hikmawati • Rajni Yafi' Amelia Rahmah
                                         </p>
-                                        <p class="text-sm text-gray-600">
+                                        <p class="text-xs sm:text-sm text-gray-600">
                                             Reinasya Diar Phalosa • Aghnia Tias Salsabila • Hafidz Mulia
                                         </p>
                                     </div>
                                 </div>
-                                
-                                <!-- Copyright -->
-                                <!-- <div class="border-t border-gray-300/30 mt-6 pt-6">
-                                    <p class="text-xs text-gray-500">
-                                        © {{ date('Y') }} Sina. Platform Literasi Digital untuk Anak-anak.
-                                    </p>
-                                </div> -->
                             </footer>
                         </div>
                         
-                        <!-- Illustration positioned absolutely on right side -->
+                        <!-- Illustration positioned absolutely on right side (hidden on mobile) -->
                         <img 
                             src="{{ asset('images/landingpage_bawah.png') }}" 
                             alt="Reading Illustration" 
-                            class="absolute right-0 bottom-0 w-auto h-full object-contain object-bottom z-10"
+                            class="hidden md:block absolute right-0 bottom-0 w-auto h-full object-contain object-bottom z-10"
                         />
                     </div>
                 </section>

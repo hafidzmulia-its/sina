@@ -41,21 +41,21 @@
         }
     </style>
     
-    <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-        <div class="w-4/5 mx-auto">
+    <div class="min-h-screen py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+        <div class="w-full sm:w-11/12 md:w-4/5 mx-auto">
             
             <!-- Success Message -->
             @if(session('success'))
-                <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
+                <div class="mb-4 sm:mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg text-sm sm:text-base">
                     {{ session('success') }}
                 </div>
             @endif
 
             <!-- Main Content Container -->
-            <div class="flex flex-col lg:flex-row gap-8 lg:items-center">
+            <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:items-start">
                 
                 <!-- Book Cover -->
-                <div class="lg:w-1/3">
+                <div class="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto lg:mx-0">
                     <div class="book-cover-container">
                         <img 
                             src="{{ $buku->cover ? asset($buku->cover) : asset('images/default-book-cover.png') }}" 
@@ -67,20 +67,20 @@
 
                 <!-- Book Details -->
                 <div class="lg:w-2/3">
-                    <div class="bg-white rounded-3xl shadow-lg p-8">
+                    <div class="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-4 sm:p-6 md:p-8">
                         
                         <!-- Book Title and Info -->
-                        <div class="mb-6">
-                            <span class="inline-block bg-teal-100 text-teal-800 text-sm font-medium px-3 py-1 rounded-full mb-3">
+                        <div class="mb-4 sm:mb-6">
+                            <span class="inline-block bg-teal-100 text-teal-800 text-xs sm:text-sm font-medium px-3 py-1 rounded-full mb-2 sm:mb-3">
                                 {{ $buku->jenis }}
                             </span>
-                            <h1 class="text-4xl font-bold text-gray-900 mb-4 font-comfortaa">
+                            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 font-comfortaa">
                                 {{ $buku->judul }}
                             </h1>
                         </div>
 
                         <!-- Progress Bar -->
-                        <div class="mb-6">
+                        <div class="mb-4 sm:mb-6">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-sm font-medium text-gray-700">Progress Membaca</span>
                                 <span class="text-sm text-gray-500">{{ $history->progress }}/{{ $history->target }}</span>

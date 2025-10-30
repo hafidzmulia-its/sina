@@ -27,7 +27,7 @@
         }
 
         .filter-button {
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 25px;
             border: 2px solid #e5e7eb;
             background: white;
@@ -37,6 +37,12 @@
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
+        }
+        
+        @media (min-width: 640px) {
+            .filter-button {
+                padding: 0.75rem 1.5rem;
+            }
         }
 
         .filter-button.active {
@@ -204,11 +210,11 @@
         }
     </style>
     
-    <main class="py-8 px-4 sm:px-6 lg:px-8">
-        <div class="w-4/5 mx-auto">
+    <main class="py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+        <div class="w-full sm:w-11/12 md:w-4/5 mx-auto">
             <!-- Header -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 font-comfortaa mb-4">
+            <div class="mb-6 sm:mb-8">
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 font-comfortaa mb-4">
                     @if(request('search'))
                         Hasil Pencarian "{{ request('search') }}"
                     @elseif(request('jenis'))
@@ -238,14 +244,14 @@
                 @endif
 
                 <!-- Type Filters -->
-                <div class="flex flex-wrap gap-3 mb-6">
+                <div class="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
                     <a href="{{ route('buku.index', request()->only('search')) }}" 
-                       class="filter-button {{ !request('jenis') ? 'active' : '' }}">
+                       class="filter-button text-sm sm:text-base {{ !request('jenis') ? 'active' : '' }}">
                         Semua Kategori
                     </a>
                     @foreach($jenisOptions as $jenis)
                     <a href="{{ route('buku.index', array_merge(request()->only('search'), ['jenis' => $jenis])) }}" 
-                       class="filter-button {{ request('jenis') === $jenis ? 'active' : '' }}">
+                       class="filter-button text-sm sm:text-base {{ request('jenis') === $jenis ? 'active' : '' }}">
                         {{ $jenis }}
                     </a>
                     @endforeach
@@ -254,7 +260,7 @@
 
             <!-- Books Grid -->
             @if($bukus->count() > 0)
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5 gap-10 mb-8">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8 lg:gap-10 mb-6 sm:mb-8">
                 @foreach($bukus as $buku)
                 <div class="book-card" onclick="viewBook({{ $buku->id }})">
                     <img 

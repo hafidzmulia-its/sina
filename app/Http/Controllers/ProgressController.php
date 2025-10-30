@@ -98,7 +98,15 @@ class ProgressController extends Controller
             'averageCompletionRate' => $childrenProgress->avg('completionRate')
         ];
         
-        return view('progress.orangtua', compact('childrenProgress', 'familyStats'));
+        // Calculate parent's weekly progress (total from all children)
+        $weeklyProgress = $children->sum(function($child) {
+            return $child->histories()
+                ->where('tanggal_record', '>=', now()->subDays(7))
+                ->distinct('buku_id')
+                ->count();
+        });
+        
+        return view('progress.orangtua', compact('childrenProgress', 'familyStats', 'weeklyProgress'));
     }
     
     private function calculateReadingStreak(User $user): int

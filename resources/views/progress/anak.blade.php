@@ -154,7 +154,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm text-gray-600 font-inter">Tingkat Selesai</p>
-                            <p class="text-2xl font-bold text-purple-600 font-fredoka">{{ number_format($completionRate, 1) }}%</p>
+                            <p class="text-2xl font-bold text-purple-600 font-fredoka">{{ number_format($completionRate, 0) }}%</p>
                         </div>
                     </div>
                 </div>

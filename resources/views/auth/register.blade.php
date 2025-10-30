@@ -1,33 +1,27 @@
 
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center ">
+    <div class="min-h-screen flex items-center justify-center p-2 sm:p-4">
         <!-- Main Register Container -->
         <div class="register-container w-full overflow-hidden relative">
             
-            <!-- Background Image Area -->
-      <div class="absolute top-0 right-0 m-0 p-0">
-            <img 
-                src="{{ asset('images/signup.png') }}" 
-                alt="Background" 
-                class="block m-0 p-0"
-                style="margin: 0; padding: 0;"
-            />
-        </div>
+            <!-- Background Image Area (hidden on mobile for better UX) -->
+            <div class="hidden md:block absolute top-0 right-0 m-0 p-0 w-3/5 h-full">
+                <img 
+                    src="{{ asset('images/signup.png') }}" 
+                    alt="Background" 
+                    class="block m-0 p-0 w-full h-full object-cover"
+                />
+            </div>
             
-            <!-- Sina Logo (Top Right) -->
-            <!-- <div class="absolute top-8 right-8 z-10">
-                <div class="text-gray-600 text-3xl font-semibold font-comfortaa">sina</div>
-            </div> -->
-            
-            <!-- Register Form Card (Left Side) -->
-            <div class="absolute left-8 top-1/2 transform -translate-y-1/2 z-10 md:relative md:left-auto md:top-auto md:transform-none md:flex md:justify-start md:items-center md:h-full md:pl-8">
-                <div class="register-card rounded-3xl w-1/2 justify-center py-8 flex flex-col items-center ">
+            <!-- Register Form Card -->
+            <div class="absolute inset-0 flex items-center justify-center md:justify-start md:pl-4 lg:pl-8 z-10 p-4">
+                <div class="register-card rounded-2xl sm:rounded-3xl w-full sm:w-4/5 md:w-1/2 max-w-md py-6 sm:py-8 px-6 sm:px-8 flex flex-col items-center bg-white bg-opacity-95 backdrop-blur-sm">
                     
                     <!-- Register Title -->
-                    <h1 class="register-title text-left text-[#46798E] text-6xl mb-6 font-comfortaa font-medium">Sign Up</h1>
+                    <h1 class="register-title text-center sm:text-left text-[#46798E] text-4xl sm:text-5xl md:text-6xl mb-4 sm:mb-6 font-comfortaa font-medium">Sign Up</h1>
                     
                     <!-- Register Form -->
-                    <form method="POST" action="{{ route('register') }}" class="space-y-4 font-inter" x-data="{ role: '{{ old('role', 'anak') }}', showPassword: false }">
+                    <form method="POST" action="{{ route('register') }}" class="space-y-3 sm:space-y-4 font-inter w-full" x-data="{ role: '{{ old('role', 'anak') }}', showPassword: false }">
                         @csrf
                         
                         <!-- Name Field -->

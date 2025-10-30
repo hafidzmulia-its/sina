@@ -99,6 +99,78 @@
                 transform: translateY(-2px);
             }
             
+            /* MOBILE-ONLY RESPONSIVE STYLES - DO NOT AFFECT DESKTOP */
+            @media (max-width: 768px) {
+                .login-container {
+                    height: auto;
+                    min-height: 100vh;
+                }
+                
+                .login-container .absolute.right-8 {
+                    right: 0 !important;
+                    left: 0 !important;
+                    transform: translate(0, -50%) !important;
+                    display: flex !important;
+                    justify-content: center !important;
+                    padding: 0 1rem;
+                }
+                
+                .login-card {
+                    width: 90% !important;
+                    max-width: 420px !important;
+                    padding: 2rem 1.5rem !important;
+                }
+                
+                .login-title {
+                    font-size: 3.5rem !important;
+                    text-align: center !important;
+                    margin-bottom: 1.5rem !important;
+                }
+                
+                .star {
+                    display: none !important;
+                }
+                
+                .form-label {
+                    font-size: 16px !important;
+                }
+                
+                .login-button {
+                    width: 75% !important;
+                    font-size: 16px !important;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .login-card {
+                    width: 95% !important;
+                    padding: 1.5rem 1.25rem !important;
+                }
+                
+                .login-title {
+                    font-size: 2.75rem !important;
+                    margin-bottom: 1.25rem !important;
+                }
+                
+                .form-label {
+                    font-size: 14px !important;
+                }
+                
+                .form-input {
+                    font-size: 14px !important;
+                    padding: 6px 16px !important;
+                }
+                
+                .login-button {
+                    width: 100% !important;
+                    font-size: 14px !important;
+                }
+                
+                .remember-label {
+                    font-size: 12px !important;
+                }
+            }
+            
             /* REGISTER STYLES (new) */
             .register-container {
                 position: fixed;
@@ -278,20 +350,36 @@
             }
             
             .remember-checkbox {
+                appearance: auto;
+                -webkit-appearance: auto;
+                -moz-appearance: auto;
+                width: 1rem;
+                height: 1rem;
                 margin-right: 8px;
-                background-color: transparent;
-                border-color: white;
+                background-color: rgba(255, 255, 255, 0.2);
+                border: 2px solid white;
+                border-radius: 4px;
+                cursor: pointer;
+                flex-shrink: 0;
             }
             
             .remember-checkbox:checked {
                 background-color: white;
                 border-color: white;
+                accent-color: #46798E;
+            }
+            
+            .remember-checkbox:focus {
+                outline: 2px solid white;
+                outline-offset: 2px;
             }
             
             .remember-label {
                 color: white;
                 font-size: 14px;
                 font-family: 'Comfortaa', sans-serif;
+                cursor: pointer;
+                user-select: none;
             }
 
             @media (max-width: 768px) {
@@ -315,36 +403,98 @@
                 }
                 
                 /* Register mobile styles */
-                .register-container .absolute.top-0.right-0 {
-                    position: fixed;
-                    width: 100%;
-                    height: 100vh;
+                .register-container {
+                    position: relative !important;
+                    height: auto !important;
+                    min-height: 100vh !important;
                 }
                 
-                .register-card {
-                    width: 90%;
-                    margin: 2rem auto;
+                .register-container .absolute.top-0.right-0 {
+                    display: none !important;
+                }
+                
+                .register-container .absolute.inset-0 {
                     position: relative !important;
-                    left: auto !important;
-                    top: auto !important;
-                    transform: none !important;
+                    padding: 2rem 1rem !important;
+                }
+                
+                .register-title {
+                    font-size: 2.5rem !important;
+                }
+                
+                .register-label {
+                    font-size: 13px !important;
+                }
+                
+                .register-input {
+                    font-size: 13px !important;
+                    padding: 8px 14px !important;
                 }
                 
                 .role-selection {
-                    flex-direction: column;
-                    gap: 12px;
+                    flex-direction: column !important;
+                    gap: 12px !important;
                 }
                 
                 .role-card {
-                    flex-direction: row;
-                    padding: 12px;
+                    flex-direction: row !important;
+                    justify-content: flex-start !important;
+                    padding: 12px !important;
                 }
                 
                 .role-avatar {
-                    width: 40px;
-                    height: 40px;
-                    margin-right: 12px;
-                    margin-bottom: 0;
+                    width: 50px !important;
+                    height: 50px !important;
+                    margin-right: 12px !important;
+                    margin-bottom: 0 !important;
+                }
+                
+                .role-text {
+                    font-size: 15px !important;
+                }
+                
+                .register-button {
+                    font-size: 15px !important;
+                    padding: 10px 28px !important;
+                }
+            }
+            
+            /* Extra mobile responsive for very small screens */
+            @media (max-width: 480px) {
+                .register-container .absolute.inset-0 {
+                    padding: 1.5rem 0.75rem !important;
+                }
+                
+                .register-title {
+                    font-size: 2rem !important;
+                    margin-bottom: 1.5rem !important;
+                }
+                
+                .register-label {
+                    font-size: 12px !important;
+                }
+                
+                .register-input {
+                    font-size: 12px !important;
+                    padding: 7px 12px !important;
+                }
+                
+                .role-avatar {
+                    width: 45px !important;
+                    height: 45px !important;
+                }
+                
+                .role-text {
+                    font-size: 13px !important;
+                }
+                
+                .register-button {
+                    font-size: 14px !important;
+                    padding: 9px 24px !important;
+                }
+                
+                .login-link {
+                    font-size: 12px !important;
                 }
             }
         </style>

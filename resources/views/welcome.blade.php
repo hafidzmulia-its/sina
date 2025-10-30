@@ -35,28 +35,28 @@
       </header> -->
 
       {{-- main hero content --}}
-      <main class="flex items-center justify-end min-h-[calc(100vh-6rem)]">
-        <div class="w-3/5 text-right pr-6 md:pr-12 lg:pr-20">
-          <h1 class=" text-4xl sm:text-5xl md:text-6xl text-[#F6E4D4] text-shadow leading-tight font-comfortaa">
-            Dunia imajinasi adalah tempat bermain yang <br> luar biasa!
+      <main class="flex items-center justify-center md:justify-end min-h-[calc(100vh-6rem)] px-4 sm:px-6">
+        <div class="w-full md:w-3/4 lg:w-3/5 text-center md:text-right md:pr-6 lg:pr-12 xl:pr-20">
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#F6E4D4] text-shadow leading-tight font-comfortaa">
+            Dunia imajinasi adalah tempat bermain yang <span class="hidden md:inline"><br></span> luar biasa!
           </h1>
 
-          <p class="mt-4 text-white/90 text-2xl sm:text-4xl mx-auto sm:mr-0 font-fredoka">
-          Mulailah membaca dan temukan awal dari <br> sebuah kisah hebat yang belum terungkap.
+          <p class="mt-4 text-white/90 text-xl sm:text-2xl md:text-3xl lg:text-4xl mx-auto md:mr-0 font-fredoka">
+          Mulailah membaca dan temukan awal dari <span class="hidden md:inline"><br></span> sebuah kisah hebat yang belum terungkap.
           </p>
 
-          <div class="mt-8 flex flex-col items-center gap-3 sm:items-end">
+          <div class="mt-8 flex flex-col items-center gap-3 md:items-end">
             {{-- Primary button -> register --}}
             <a
               href="{{ route('register') }}"
-              class="inline-flex items-center font-inter text-xl sm:text-2xl justify-center w-1/4 py-3 rounded-full bg-white text-sky-700 font-semibold shadow-md hover:shadow-lg transition-transform duration-150 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-sky-300"
+              class="inline-flex items-center font-inter text-sm sm:text-xl md:text-2xl justify-center w-1/3 sm:w-2/3 md:w-1/2 lg:w-1/4 py-1 md:py-3 rounded-full bg-white text-sky-700 font-semibold shadow-md hover:shadow-lg transition-transform duration-150 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-sky-300"
               aria-label="Buat akun"
             >
               Buat Akun
             </a>
             
             {{-- Small login prompt --}}
-            <a href="{{ route('login') }}" class="text-lg sm:text-xl text-white/80 hover:text-white">
+            <a href="{{ route('login') }}" class="text-base sm:text-lg md:text-xl text-white/80 hover:text-white">
               Sudah mempunyai akun?
               <span class="ml-1 font-semibold underline">Login</span>
             </a>
