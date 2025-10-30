@@ -23,6 +23,11 @@ class BukuController extends Controller
         // Only bypass SSL in local development (not in production)
         if (app()->environment('local')) {
             $options['verify'] = false;
+            // Additional SSL bypass options for Windows local development
+            $options['curl'] = [
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
+            ];
         }
         
         return \Illuminate\Support\Facades\Http::withOptions($options);

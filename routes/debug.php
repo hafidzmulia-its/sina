@@ -1,8 +1,58 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\BukuController;
 use Illuminate\Http\Request;
+
+// Comprehensive system health check
+Route::get('/debug-system', function () {
+    try {
+        $info = [
+            'app_env' => config('app.env'),
+            'app_debug' => config('app.debug'),
+            'app_url' => config('app.url'),
+            'db_connection' => config('database.default'),
+            'db_host' => config('database.connections.mysql.host'),
+            'db_database' => config('database.connections.mysql.database'),
+            'session_driver' => config('session.driver'),
+            'cache_driver' => config('cache.default'),
+            'filesystem_disk' => config('filesystems.default'),
+        ];
+
+        // Test database connection
+        try {
+            DB::connection()->getPdo();
+            $info['db_status'] = 'Connected';
+            $info['db_tables_count'] = count(DB::select('SHOW TABLES'));
+            $info['users_count'] = DB::table('users')->count();
+        } catch (\Exception $e) {
+            $info['db_status'] = 'Failed';
+            $info['db_error'] = $e->getMessage();
+        }
+
+        // Test session
+        try {
+            session(['test_key' => 'test_value_' . time()]);
+            $info['session_status'] = session('test_key') ? 'Working' : 'Failed';
+        } catch (\Exception $e) {
+            $info['session_status'] = 'Failed';
+            $info['session_error'] = $e->getMessage();
+        }
+
+        // Test Cloudinary config
+        $info['cloudinary_configured'] = config('cloudinary.cloud_name') ? 'Yes' : 'No';
+
+        return response()->json($info, 200, [], JSON_PRETTY_PRINT);
+    } catch (\Exception $e) {
+        Log::error('System debug failed', ['error' => $e->getMessage()]);
+        return response()->json([
+            'error' => $e->getMessage(),
+            'trace' => explode("\n", $e->getTraceAsString())
+        ], 500, [], JSON_PRETTY_PRINT);
+    }
+});
 
 // Test Cloudinary configuration
 Route::get('/debug-cloudinary', function () {

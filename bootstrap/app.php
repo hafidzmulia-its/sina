@@ -17,5 +17,15 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->report(function (Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Application Exception', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+                'url' => request()->fullUrl(),
+                'method' => request()->method(),
+                'ip' => request()->ip()
+            ]);
+        });
     })->create();
