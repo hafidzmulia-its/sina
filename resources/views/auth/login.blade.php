@@ -10,7 +10,7 @@
                     alt="Background" 
                     width="1200" 
                     height="800" 
-                    class="w-full h-full object-cover"
+                    class="w-full h-full"
                 />
             </div>
             
@@ -101,7 +101,7 @@
                         </div>
                         
                         <!-- Submit Button -->
-                        <div class="text-center pt-2">
+                        <div class="text-center  pt-2">
                             <button type="submit" class="login-button w-1/2">
                                 Log In
                             </button>

@@ -44,8 +44,23 @@ class ProgressController extends Controller
         // Get reading streak (consecutive days with reading activity)
         $streak = $this->calculateReadingStreak($user);
         
-        // Calculate completion rate
-        $completionRate = $totalBooks > 0 ? ($completedBooks / $totalBooks) * 100 : 0;
+        // Calculate real completion rate based on actual progress
+        // Get the latest history record for each book
+        $latestHistories = $user->histories()
+            ->selectRaw('buku_id, MAX(id) as latest_id')
+            ->groupBy('buku_id')
+            ->pluck('latest_id');
+            
+        $bookProgresses = $user->histories()
+            ->whereIn('id', $latestHistories)
+            ->get();
+            
+        $totalProgressPercentage = $bookProgresses->sum(function ($history) {
+            return $history->getProgressPercentage();
+        });
+        
+        $totalPossiblePercentage = $totalBooks * 100;
+        $completionRate = $totalPossiblePercentage > 0 ? ($totalProgressPercentage / $totalPossiblePercentage) * 100 : 0;
         
         return view('progress.anak', compact(
             'totalBooks',
@@ -71,13 +86,30 @@ class ProgressController extends Controller
                 ->sum('progress');
             $streak = $this->calculateReadingStreak($child);
             
+            // Calculate real completion rate based on actual progress
+            $latestHistories = $child->histories()
+                ->selectRaw('buku_id, MAX(id) as latest_id')
+                ->groupBy('buku_id')
+                ->pluck('latest_id');
+                
+            $bookProgresses = $child->histories()
+                ->whereIn('id', $latestHistories)
+                ->get();
+                
+            $totalProgressPercentage = $bookProgresses->sum(function ($history) {
+                return $history->getProgressPercentage();
+            });
+            
+            $totalPossiblePercentage = $totalBooks * 100;
+            $completionRate = $totalPossiblePercentage > 0 ? ($totalProgressPercentage / $totalPossiblePercentage) * 100 : 0;
+            
             return [
                 'child' => $child,
                 'totalBooks' => $totalBooks,
                 'completedBooks' => $completedBooks,
                 'weeklyProgress' => $weeklyProgress,
                 'streak' => $streak,
-                'completionRate' => $totalBooks > 0 ? ($completedBooks / $totalBooks) * 100 : 0,
+                'completionRate' => $completionRate,
                 'recentActivities' => $child->histories()
                     ->with('buku')
                     ->latest('tanggal_record')

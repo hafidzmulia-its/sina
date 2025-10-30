@@ -192,7 +192,7 @@
 
                     <!-- Performance Indicator -->
                     <div class="mt-6 pt-6 border-t border-gray-200">
-                        @if($childData['completionRate'] >= 80)
+                    @if($childData['completionRate'] >= 80)
                             <div class="bg-green-100 border border-green-200 rounded-lg p-4 text-center">
                                 <p class="text-green-800 font-medium">🌟 {{ $childData['child']->name }} sangat rajin membaca!</p>
                             </div>

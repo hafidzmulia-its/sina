@@ -106,6 +106,11 @@
                     min-height: 100vh;
                 }
                 
+                /* Make background image cover full screen on mobile */
+                .login-container .absolute.inset-0 img {
+                    object-fit: cover !important;
+                }
+                
                 .login-container .absolute.right-8 {
                     right: 0 !important;
                     left: 0 !important;
@@ -196,6 +201,20 @@
                 height: 100%;
                 object-fit: cover;
                 display: block;
+            }
+            
+            /* Center the register card in the left half (40% of viewport) */
+            .register-container .absolute.inset-0 {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 60%;
+                height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                padding: 2rem;
             }
             
             /* .register-card {
@@ -415,7 +434,14 @@
                 
                 .register-container .absolute.inset-0 {
                     position: relative !important;
+                    width: 100% !important;
+                    height: auto !important;
                     padding: 2rem 1rem !important;
+                }
+                
+                .register-card {
+                    width: 90% !important;
+                    max-width: 500px !important;
                 }
                 
                 .register-title {

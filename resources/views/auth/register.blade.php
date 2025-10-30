@@ -14,8 +14,8 @@
             </div>
             
             <!-- Register Form Card -->
-            <div class="absolute inset-0 flex items-center justify-center md:justify-start md:pl-4 lg:pl-8 z-10 p-4">
-                <div class="register-card rounded-2xl sm:rounded-3xl w-full sm:w-4/5 md:w-1/2 max-w-md py-6 sm:py-8 px-6 sm:px-8 flex flex-col items-center bg-white bg-opacity-95 backdrop-blur-sm">
+            <div class="absolute inset-0  flex items-center justify-center md:justify-start md:pl-4 lg:pl-8 z-10 p-4">
+                <div class="register-card  rounded-2xl sm:rounded-3xl w-full sm:w-4/5 md:w-1/2 max-w-md py-6 sm:py-8 px-6 sm:px-8 flex flex-col items-center bg-white bg-opacity-95 backdrop-blur-sm">
                     
                     <!-- Register Title -->
                     <h1 class="register-title text-center sm:text-left text-[#46798E] text-4xl sm:text-5xl md:text-6xl mb-4 sm:mb-6 font-comfortaa font-medium">Sign Up</h1>
@@ -114,9 +114,9 @@
                         <!-- Role Selection -->
                         <div>
                             <label class="register-label">Siapa yang menggunakan akun ini?</label>
-                            <div class="role-selection mt-3">
+                            <div class="role-selection mt-3 flex flex-row items-center justify-between gap-3 flex-nowrap overflow-x-auto">
                                 <!-- Orang Tua Option -->
-                                <label class="role-option w-1/2">
+                                <label class="role-option flex-1 md:w-1/2 w-2/3">
                                     <input 
                                         type="radio" 
                                         name="role" 
@@ -125,14 +125,14 @@
                                         class="role-radio"
                                         {{ old('role') == 'orangtua' ? 'checked' : '' }}
                                     />
-                                    <div class="role-card">
+                                    <div class="role-card flex flex-col items-center justify-center p-3">
                                         <img src="{{ asset('images/profil_orangtua.png') }}" alt="Orang Tua" class="role-avatar">
-                                        <span class="role-text">Orang Tua</span>
+                                        <span class="role-text mt-2">Orang Tua</span>
                                     </div>
                                 </label>
                                 
                                 <!-- Anak Option -->
-                                <label class="role-option w-1/2">
+                                <label class="role-option flex-1 md:w-1/2 w-2/3">
                                     <input 
                                         type="radio" 
                                         name="role" 
@@ -141,9 +141,9 @@
                                         class="role-radio"
                                         {{ old('role', 'anak') == 'anak' ? 'checked' : '' }}
                                     />
-                                    <div class="role-card">
+                                    <div class="role-card flex flex-col items-center justify-center p-3">
                                         <img src="{{ asset('images/profil_anak.png') }}" alt="Anak" class="role-avatar">
-                                        <span class="role-text">Anak</span>
+                                        <span class="role-text mt-2">Anak</span>
                                     </div>
                                 </label>
                             </div>
