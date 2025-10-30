@@ -60,6 +60,12 @@ return [
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                // For Aiven cloud database with SSL
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                // Connection timeout and retry settings
+                PDO::ATTR_TIMEOUT => 10,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_EMULATE_PREPARES => false,
             ]) : [],
         ],
 

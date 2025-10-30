@@ -20,12 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS in production
+        // Force HTTPS in production only
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
+            // Trust all proxies (needed for Vercel)
+            $this->app['request']->server->set('HTTPS', 'on');
         }
-        
-        // Trust all proxies (needed for Vercel)
-        $this->app['request']->server->set('HTTPS', 'on');
     }
 }
