@@ -102,7 +102,12 @@ class MigrateImagesToCloudinary extends Command
                     // Correct signature generation according to Cloudinary docs
                     $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
                     
-                    $response = Http::withOptions(['verify' => false])->asMultipart()->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
+                    // Only bypass SSL in local development
+                    $httpClient = app()->environment('local') 
+                        ? Http::withOptions(['verify' => false])
+                        : Http::withOptions([]);
+                    
+                    $response = $httpClient->asMultipart()->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
                         'file' => fopen($file->getPathname(), 'r'),
                         'public_id' => $publicId,
                         'api_key' => $apiKey,

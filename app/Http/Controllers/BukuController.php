@@ -13,6 +13,22 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 class BukuController extends Controller
 {
     /**
+     * Get HTTP client with SSL verification based on environment
+     * Only disable SSL verification in local development
+     */
+    private function getHttpClient()
+    {
+        $options = [];
+        
+        // Only bypass SSL in local development (not in production)
+        if (app()->environment('local')) {
+            $options['verify'] = false;
+        }
+        
+        return \Illuminate\Support\Facades\Http::withOptions($options);
+    }
+
+    /**
      * Extract public_id from Cloudinary URL
      */
     private function extractPublicIdFromUrl($url)
@@ -154,7 +170,7 @@ class BukuController extends Controller
                     // Generate signature
                     $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
                     
-                    $response = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+                    $response = $this->getHttpClient()
                         ->asMultipart()
                         ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
                             'file' => fopen($request->file('cover')->getRealPath(), 'r'),
@@ -272,7 +288,7 @@ class BukuController extends Controller
                             
                             $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
                             
-                            $response = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+                            $response = $this->getHttpClient()
                                 ->asForm()
                                 ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/destroy", [
                                     'public_id' => $publicId,
@@ -309,7 +325,7 @@ class BukuController extends Controller
                 // Generate signature
                 $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
                 
-                $response = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+                $response = $this->getHttpClient()
                     ->asMultipart()
                     ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
                         'file' => fopen($request->file('cover')->getRealPath(), 'r'),
@@ -374,7 +390,7 @@ class BukuController extends Controller
                     
                     $signature = hash('sha1', "public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
                     
-                    $response = \Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+                    $response = $this->getHttpClient()
                         ->asForm()
                         ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/destroy", [
                             'public_id' => $publicId,
