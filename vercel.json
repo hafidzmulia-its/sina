@@ -55,7 +55,8 @@
         "VITE_APP_ENV": "production",
         "MIX_PUSHER_APP_KEY": "",
         "MIX_PUSHER_APP_CLUSTER": "",
-        "ASSET_URL": ""
+        "ASSET_URL": "",
+        "APP_FORCE_HTTPS": "true"
     },
     "buildCommand": "npm install && npm run vercel-build"
 }
