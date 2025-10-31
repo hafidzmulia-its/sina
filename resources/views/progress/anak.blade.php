@@ -19,7 +19,7 @@
                                 <p class="text-3xl text-[#303A3A] mb-8 font-inter" style="text-shadow: 2px 2px 6px rgba(0,0,0,0.25);">
                                     Minggu ini kamu sudah membaca sebanyak
                                 </p>
-                                <p class="text-6xl font-inter font-bold text-sina-blue">{{ $weeklyProgress .' Buku' }}</p>
+                                <p class="text-6xl font-inter font-bold text-sina-blue">{{ $weeklyProgress .' Halaman' }}</p>
                         </div>
                     </div>
                 </div>
