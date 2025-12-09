@@ -17,12 +17,13 @@ jobs:
         with:
           host: ${{ secrets.HOSTDATA_SSH_HOST }}
           username: ${{ secrets.HOSTDATA_SSH_USER }}
-          key: ${{ secrets.HOSTDATA_SSH_KEY }}
-          port: 22
+          password: ${{ secrets.HOSTDATA_SSH_PASSWORD }}
+          port: ${{ secrets.HOSTDATA_SSH_PORT }}
           script: |
-            cd ${{ secrets.HOSTDATA_APP_PATH }}
+            cd ~/public_html/sina
             git pull origin main
             composer install --no-dev --optimize-autoloader
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
+            chmod -R 775 storage bootstrap/cache
