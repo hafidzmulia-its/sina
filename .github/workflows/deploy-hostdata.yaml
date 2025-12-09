@@ -1,0 +1,28 @@
+name: Deploy Sina to Hostdata
+
+on:
+  push:
+    branches: [ "main" ]   # ganti kalau branch utama bukan main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH to Hostdata
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOSTDATA_SSH_HOST }}
+          username: ${{ secrets.HOSTDATA_SSH_USER }}
+          key: ${{ secrets.HOSTDATA_SSH_KEY }}
+          port: 22
+          script: |
+            cd ${{ secrets.HOSTDATA_APP_PATH }}
+            git pull origin main
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
