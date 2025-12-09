@@ -38,7 +38,7 @@
       <main class="flex items-center justify-center md:justify-end min-h-[calc(100vh-6rem)] px-4 sm:px-6">
         <div class="w-full md:w-3/4 lg:w-3/5 text-center md:text-right md:pr-6 lg:pr-12 xl:pr-20">
           <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#F6E4D4] text-shadow leading-tight font-comfortaa">
-            Duniaa imajinasi adalah tempat bermain yang <span class="hidden md:inline"><br></span> luar biasa!
+            Dunia imajinasi adalah tempat bermain yang <span class="hidden md:inline"><br></span> luar biasa!
           </h1>
 
           <p class="mt-4 text-white/90 text-xl sm:text-2xl md:text-3xl lg:text-4xl mx-auto md:mr-0 font-fredoka">
