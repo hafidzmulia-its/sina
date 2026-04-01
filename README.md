@@ -2,7 +2,7 @@
 
 A collaborative student project that brings children's stories to life with progress tracking and an intuitive admin content management system.
 
-**Live Demo:** [ibnu-sina.vercel.app](https://ibnu-sina.vercel.app)
+**Live Demo:** [sina.hafmul.site](https://sina.hafmul.site)
 
 ---
 
